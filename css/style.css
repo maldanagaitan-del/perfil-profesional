@@ -9,6 +9,7 @@
 :root {
     --color-primario: #1a3a5c;
     --color-secundario: #2e8b8b;
+    --color-secundario-texto: #1f6363;
     --color-fondo: #f9f9f9;
     --color-texto: #333333;
     --color-texto-claro: #666666;
@@ -70,7 +71,7 @@ nav {
 }
 
 .nav-links a:hover {
-    color: var(--color-secundario);
+    color: var(--color-secundario-texto);
 }
 
 /* ===== SECCIÓN INICIO (HERO) ===== */
@@ -89,7 +90,7 @@ nav {
 
 .subtitulo {
     font-size: 1.3rem;
-    color: var(--color-secundario);
+    color: var(--color-secundario-texto);
     font-weight: 600;
     margin-bottom: 1.5rem;
 }
@@ -324,7 +325,7 @@ nav {
 }
 
 .datos-contacto-directo a {
-    color: var(--color-secundario);
+    color: var(--color-secundario-texto);
     text-decoration: none;
     font-weight: 600;
 }
