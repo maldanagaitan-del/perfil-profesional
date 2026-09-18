@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="no-js">
 
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,12 @@
     <header>
         <nav>
             <div class="logo">Miguel Aldana</div>
-            <ul class="nav-links">
+            <button class="btn-menu" id="btnMenu" aria-label="Abrir menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#sobre-mi">Sobre mí</a></li>
                 <li><a href="#servicios">Servicios</a></li>
@@ -34,7 +39,7 @@
             <a href="#contacto" class="btn-principal">Hablemos de tu proyecto</a>
         </section>
 
-        <section id="sobre-mi">
+        <section id="sobre-mi" class="seccion-oculta">
             <h2>Sobre mí</h2>
             <div class="contenido-sobre-mi">
                 <img src="img/foto-perfil.jpg" alt="Foto de perfil de Miguel Aldana">
@@ -58,7 +63,7 @@
                 </div>
         </section>
 
-        <section id="servicios">
+        <section id="servicios" class="seccion-oculta">
             <h2>Servicios</h2>
             <div class="grid-servicios">
 
@@ -89,7 +94,7 @@
             </div>
         </section>
 
-        <section id="proyectos">
+        <section id="proyectos" class="seccion-oculta">
             <h2>Proyectos</h2>
             <div class="grid-proyectos">
 
@@ -122,7 +127,7 @@
             </div>
         </section>
 
-        <section id="contacto">
+        <section id="contacto" class="seccion-oculta">
             <h2>Contacto</h2>
             <p>¿Tienes un proyecto en mente? Escríbeme y hablemos.</p>
 
@@ -154,6 +159,8 @@
     <footer>
         <p>&copy; 2026 Miguel Aldana. Todos los derechos reservados.</p>
     </footer>
+ 
+    <script src="js/script.js"></script>
 
 </body>
 
