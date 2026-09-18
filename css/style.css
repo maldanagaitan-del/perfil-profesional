@@ -67,6 +67,7 @@ nav {
 .nav-links a:hover {
     color: var(--color-secundario);
 }
+
 /* ===== SECCIÓN INICIO (HERO) ===== */
 #inicio {
     max-width: var(--ancho-maximo);
@@ -110,6 +111,7 @@ nav {
     background-color: var(--color-secundario);
     transform: translateY(-2px);
 }
+
 /* ===== SECCIÓN SOBRE MÍ ===== */
 #sobre-mi {
     max-width: var(--ancho-maximo);
@@ -156,6 +158,7 @@ nav {
 .datos-clave li:last-child {
     border-bottom: none;
 }
+
 /* ===== SECCIÓN SERVICIOS ===== */
 #servicios {
     max-width: var(--ancho-maximo);
@@ -198,6 +201,7 @@ nav {
 .tarjeta-servicio p {
     color: var(--color-texto-claro);
 }
+
 /* ===== SECCIÓN PROYECTOS ===== */
 #proyectos {
     max-width: var(--ancho-maximo);
@@ -240,6 +244,7 @@ nav {
 .tarjeta-proyecto p {
     color: var(--color-texto-claro);
 }
+
 /* ===== SECCIÓN CONTACTO ===== */
 #contacto {
     max-width: 700px;
@@ -254,7 +259,7 @@ nav {
     margin-bottom: 0.5rem;
 }
 
-#contacto > p {
+#contacto>p {
     color: var(--color-texto-claro);
     margin-bottom: 2rem;
 }
@@ -329,4 +334,69 @@ footer {
     padding: 2rem;
     background-color: var(--color-primario);
     color: var(--color-blanco);
+}
+
+/* ===================================== */
+/* ===== RESPONSIVE (MÓVIL) ===== */
+/* ===================================== */
+
+@media (max-width: 768px) {
+
+    nav {
+        padding: 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+
+    #inicio h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitulo {
+        font-size: 1.1rem;
+    }
+
+    .descripcion {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    .contenido-sobre-mi {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contenido-sobre-mi img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .grid-servicios,
+    .grid-proyectos {
+        grid-template-columns: 1fr;
+    }
+
+    :root {
+        --espaciado-seccion: 3rem 1.2rem;
+    }
+
+    #contacto {
+        max-width: 100%;
+    }
+
+    #contacto h2 {
+        font-size: 1.8rem;
+    }
+
+    #servicios h2,
+    #proyectos h2,
+    #sobre-mi h2 {
+        font-size: 1.8rem;
+    }
 }
