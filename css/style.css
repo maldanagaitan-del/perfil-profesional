@@ -7,13 +7,6 @@
 
 /* ===== VARIABLES DE DISEÑO ===== */
 :root {
-    [data-tema="oscuro"] {
-        --color-fondo: #0f172a;
-        --color-blanco: #1e293b;
-        --color-texto: #e2e8f0;
-        --color-texto-claro: #94a3b8;
-    }
-
     --color-primario: #1a3a5c;
     --color-secundario: #2e8b8b;
     --color-secundario-texto: #1f6363;
@@ -42,17 +35,19 @@
     --sombra-md: 0 2px 10px rgba(0, 0, 0, 0.06);
     --sombra-lg: 0 6px 20px rgba(0, 0, 0, 0.1);
 
-    --fuente-principal: 'Inter',
-    'Segoe UI',
-    Arial,
-    sans-serif;
-    --fuente-titulos: 'Poppins',
-    'Segoe UI',
-    Arial,
-    sans-serif;
+    --fuente-principal: 'Inter', 'Segoe UI', Arial, sans-serif;
+    --fuente-titulos: 'Poppins', 'Segoe UI', Arial, sans-serif;
 
     --espaciado-seccion: var(--space-3xl) var(--space-xl);
     --ancho-maximo: 1100px;
+}
+
+/* ===== MODO OSCURO (corregido: ya no anidado dentro de :root) ===== */
+[data-tema="oscuro"] {
+    --color-fondo: #0f172a;
+    --color-blanco: #1e293b;
+    --color-texto: #e2e8f0;
+    --color-texto-claro: #94a3b8;
 }
 
 body {
@@ -98,6 +93,35 @@ nav {
     color: var(--color-primario);
 }
 
+.btn-tema {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-texto);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-tema svg {
+    width: 22px;
+    height: 22px;
+}
+
+.icono-luna {
+    display: none;
+}
+
+[data-tema="oscuro"] .icono-sol {
+    display: none;
+}
+
+[data-tema="oscuro"] .icono-luna {
+    display: block;
+}
+
 .btn-menu {
     display: none;
 }
@@ -107,7 +131,6 @@ nav {
     list-style: none;
     gap: 2rem;
 }
-
 
 .nav-links a {
     text-decoration: none;
@@ -120,12 +143,54 @@ nav {
     color: var(--color-secundario-texto);
 }
 
+.nav-links a.activo {
+    color: var(--color-secundario-texto);
+}
+
 /* ===== SECCIÓN INICIO (HERO) ===== */
 #inicio {
     max-width: var(--ancho-maximo);
     margin: 0 auto;
     padding: var(--espaciado-seccion);
     text-align: center;
+    background-image: radial-gradient(circle at 1px 1px, #e0e0e0 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
+.badge-disponible {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background-color: var(--color-blanco);
+    border: 1px solid #e0e0e0;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-texto-claro);
+    margin-bottom: var(--space-lg);
+}
+
+.punto-verde {
+    width: 8px;
+    height: 8px;
+    background-color: #2ecc71;
+    border-radius: var(--radio-full);
+    animation: pulso 2s infinite;
+}
+
+@keyframes pulso {
+    0% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(46, 204, 113, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
+    }
 }
 
 #inicio h1 {
@@ -150,6 +215,8 @@ nav {
 
 .btn-principal {
     display: inline-block;
+    position: relative;
+    overflow: hidden;
     background-color: var(--color-primario);
     color: var(--color-blanco);
     text-decoration: none;
@@ -203,7 +270,7 @@ nav {
     width: 280px;
     height: 280px;
     object-fit: cover;
-    border-radius: 50%;
+    border-radius: var(--radio-full);
     flex-shrink: 0;
 }
 
@@ -224,6 +291,27 @@ nav {
 
 .datos-clave li:last-child {
     border-bottom: none;
+}
+
+.grid-contadores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    text-align: center;
+}
+
+.numero-contador {
+    display: block;
+    font-family: var(--fuente-titulos);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+.contador p {
+    font-size: 0.85rem;
+    color: var(--color-texto-claro);
 }
 
 /* ===== SECCIÓN SERVICIOS ===== */
@@ -257,6 +345,23 @@ nav {
 .tarjeta-servicio:hover {
     transform: translateY(-5px);
     box-shadow: var(--sombra-lg);
+}
+
+.icono-servicio {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(46, 139, 139, 0.1);
+    border-radius: var(--radio-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-secundario-texto);
+    margin-bottom: var(--space-md);
+}
+
+.icono-servicio svg {
+    width: 24px;
+    height: 24px;
 }
 
 .tarjeta-servicio h3 {
@@ -310,340 +415,6 @@ nav {
 
 .tarjeta-proyecto p {
     color: var(--color-texto-claro);
-}
-
-/* ===== SECCIÓN CONTACTO ===== */
-#contacto {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-    text-align: center;
-}
-
-#contacto h2 {
-    font-size: 2.2rem;
-    color: var(--color-primario);
-    margin-bottom: 0.5rem;
-}
-
-#contacto>p {
-    color: var(--color-texto-claro);
-    margin-bottom: 2rem;
-}
-
-.formulario-contacto {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    text-align: left;
-    margin-bottom: 3rem;
-}
-
-.formulario-contacto label {
-    font-weight: 600;
-    margin-bottom: -0.7rem;
-    color: var(--color-texto);
-}
-
-.formulario-contacto input,
-.formulario-contacto textarea {
-    padding: 0.8rem;
-    border: 1px solid #d0d0d0;
-    border-radius: var(--radio-sm);
-    font-family: var(--fuente-principal);
-    font-size: 1rem;
-}
-
-.formulario-contacto input:focus,
-.formulario-contacto textarea:focus {
-    outline: none;
-    border-color: var(--color-secundario);
-}
-
-.formulario-contacto button {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-    border: none;
-    padding: 0.9rem;
-    border-radius: var(--radio-sm);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.formulario-contacto button:hover {
-    background-color: var(--color-secundario);
-}
-
-.datos-contacto-directo ul {
-    list-style: none;
-    margin-top: 1rem;
-}
-
-.datos-contacto-directo li {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-sm);
-}
-
-.datos-contacto-directo svg {
-    width: 20px;
-    height: 20px;
-    color: var(--color-secundario-texto);
-    flex-shrink: 0;
-}
-
-.datos-contacto-directo a {
-    color: var(--color-secundario-texto);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.datos-contacto-directo a:hover {
-    text-decoration: underline;
-}
-
-/* ===== FOOTER ===== */
-footer {
-    text-align: center;
-    padding: 2rem;
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-}
-
-/* ===== ANIMACIÓN AL HACER SCROLL ===== */
-.seccion-oculta {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.seccion-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ===================================== */
-/* ===== RESPONSIVE (MÓVIL) ===== */
-/* ===================================== */
-
-@media (max-width: 768px) {
-
-    nav {
-        padding: 1rem;
-    }
-
-    .nav-links {
-        gap: 1rem;
-    }
-
-    .nav-links a {
-        font-size: 0.85rem;
-    }
-
-    #inicio h1 {
-        font-size: 2.2rem;
-    }
-
-    .subtitulo {
-        font-size: 1.1rem;
-    }
-
-    .descripcion {
-        font-size: 1rem;
-        padding: 0 1rem;
-    }
-
-    .contenido-sobre-mi {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .contenido-sobre-mi img {
-        width: 200px;
-        height: 200px;
-        border-radius: var(--radio-full);
-    }
-
-    .grid-servicios,
-    .grid-proyectos {
-        grid-template-columns: 1fr;
-    }
-
-    :root {
-        --espaciado-seccion: 3rem 1.2rem;
-    }
-
-    #contacto {
-        max-width: 100%;
-    }
-
-    #contacto h2 {
-        font-size: 1.8rem;
-    }
-
-    #servicios h2,
-    #proyectos h2,
-    #sobre-mi h2 {
-        font-size: 1.8rem;
-    }
-
-    .btn-menu {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        width: 28px;
-        height: 20px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-    }
-
-    .btn-menu span {
-        display: block;
-        width: 100%;
-        height: 3px;
-        background-color: var(--color-primario);
-        border-radius: 2px;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: var(--color-blanco);
-        flex-direction: column;
-        padding: 1.5rem;
-        box-shadow: var(--sombra-lg);
-    }
-
-    .nav-links.activo {
-        display: flex;
-    }
-
-    .grid-contadores {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-sm);
-    }
-
-    .numero-contador {
-        font-size: 1.5rem;
-    }
-}
-
-/* Si JavaScript no carga, el navegador ignora este selector avanzado
-   y las secciones NO quedan invisibles */
-.no-js .seccion-oculta {
-    opacity: 1;
-    transform: none;
-}
-
-.badge-disponible {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    background-color: var(--color-blanco);
-    border: 1px solid #e0e0e0;
-    padding: var(--space-xs) var(--space-md);
-    border-radius: 100px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--color-texto-claro);
-    margin-bottom: var(--space-lg);
-}
-
-.punto-verde {
-    width: 8px;
-    height: 8px;
-    background-color: #2ecc71;
-    border-radius: var(--radio-full);
-    animation: pulso 2s infinite;
-}
-
-@keyframes pulso {
-    0% {
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.5);
-    }
-
-    70% {
-        box-shadow: 0 0 0 6px rgba(46, 204, 113, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-    }
-}
-
-.icono-servicio {
-    width: 48px;
-    height: 48px;
-    background-color: rgba(46, 139, 139, 0.1);
-    border-radius: var(--radio-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-secundario-texto);
-    margin-bottom: var(--space-md);
-}
-
-.icono-servicio svg {
-    width: 24px;
-    height: 24px;
-}
-
-#inicio {
-    background-image: radial-gradient(circle at 1px 1px, #e0e0e0 1px, transparent 0);
-    background-size: 24px 24px;
-}
-
-.nav-links a.activo {
-    color: var(--color-secundario-texto);
-}
-
-/* ===== BOTÓN WHATSAPP FLOTANTE ===== */
-.whatsapp-flotante {
-    position: fixed;
-    bottom: var(--space-xl);
-    right: var(--space-xl);
-    width: 60px;
-    height: 60px;
-    background-color: #25d366;
-    border-radius: var(--radio-full);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-blanco);
-    box-shadow: var(--sombra-lg);
-    z-index: 200;
-    transition: transform 0.2s ease;
-}
-
-.whatsapp-flotante svg {
-    width: 32px;
-    height: 32px;
-}
-
-.whatsapp-flotante:hover {
-    transform: scale(1.08);
-}
-
-@media (max-width: 768px) {
-    .whatsapp-flotante {
-        width: 52px;
-        height: 52px;
-        bottom: var(--space-lg);
-        right: var(--space-lg);
-    }
-
-    .whatsapp-flotante svg {
-        width: 28px;
-        height: 28px;
-    }
 }
 
 /* ===== SECCIÓN TESTIMONIOS ===== */
@@ -770,52 +541,272 @@ footer {
     line-height: 1.7;
 }
 
-.btn-tema {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-texto);
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-tema svg {
-    width: 22px;
-    height: 22px;
-}
-
-.icono-luna {
-    display: none;
-}
-
-[data-tema="oscuro"] .icono-sol {
-    display: none;
-}
-
-[data-tema="oscuro"] .icono-luna {
-    display: block;
-}
-
-.grid-contadores {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-    margin-top: var(--space-xl);
+/* ===== SECCIÓN CONTACTO ===== */
+#contacto {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: var(--espaciado-seccion);
     text-align: center;
 }
 
-.numero-contador {
-    display: block;
-    font-family: var(--fuente-titulos);
-    font-size: 2rem;
-    font-weight: 700;
+#contacto h2 {
+    font-size: 2.2rem;
     color: var(--color-primario);
+    margin-bottom: 0.5rem;
 }
 
-.contador p {
-    font-size: 0.85rem;
+#contacto>p {
     color: var(--color-texto-claro);
+    margin-bottom: 2rem;
+}
+
+.formulario-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-align: left;
+    margin-bottom: 3rem;
+}
+
+.formulario-contacto label {
+    font-weight: 600;
+    margin-bottom: -0.7rem;
+    color: var(--color-texto);
+}
+
+.formulario-contacto input,
+.formulario-contacto textarea {
+    padding: 0.8rem;
+    border: 1px solid #d0d0d0;
+    border-radius: var(--radio-sm);
+    font-family: var(--fuente-principal);
+    font-size: 1rem;
+}
+
+.formulario-contacto input:focus,
+.formulario-contacto textarea:focus {
+    outline: none;
+    border-color: var(--color-secundario);
+}
+
+.formulario-contacto button {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border: none;
+    padding: 0.9rem;
+    border-radius: var(--radio-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.formulario-contacto button:hover {
+    background-color: var(--color-secundario);
+}
+
+.datos-contacto-directo ul {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.datos-contacto-directo li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.datos-contacto-directo svg {
+    width: 20px;
+    height: 20px;
+    color: var(--color-secundario-texto);
+    flex-shrink: 0;
+}
+
+.datos-contacto-directo a {
+    color: var(--color-secundario-texto);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.datos-contacto-directo a:hover {
+    text-decoration: underline;
+}
+
+/* ===== BOTÓN WHATSAPP FLOTANTE ===== */
+.whatsapp-flotante {
+    position: fixed;
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    border-radius: var(--radio-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-blanco);
+    box-shadow: var(--sombra-lg);
+    z-index: 200;
+    transition: transform 0.2s ease;
+}
+
+.whatsapp-flotante svg {
+    width: 32px;
+    height: 32px;
+}
+
+.whatsapp-flotante:hover {
+    transform: scale(1.08);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+}
+
+/* ===== ANIMACIÓN AL HACER SCROLL ===== */
+.seccion-oculta {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.seccion-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Si JavaScript no carga, el navegador ignora este selector avanzado
+   y las secciones NO quedan invisibles */
+.no-js .seccion-oculta {
+    opacity: 1;
+    transform: none;
+}
+
+/* ===================================== */
+/* ===== RESPONSIVE (MÓVIL) ===== */
+/* ===================================== */
+
+@media (max-width: 768px) {
+
+    nav {
+        padding: 1rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+
+    #inicio h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitulo {
+        font-size: 1.1rem;
+    }
+
+    .descripcion {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    .contenido-sobre-mi {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contenido-sobre-mi img {
+        width: 200px;
+        height: 200px;
+        border-radius: var(--radio-full);
+    }
+
+    .grid-contadores {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .numero-contador {
+        font-size: 1.5rem;
+    }
+
+    .grid-servicios,
+    .grid-proyectos {
+        grid-template-columns: 1fr;
+    }
+
+    :root {
+        --espaciado-seccion: 3rem 1.2rem;
+    }
+
+    #contacto {
+        max-width: 100%;
+    }
+
+    #contacto h2 {
+        font-size: 1.8rem;
+    }
+
+    #servicios h2,
+    #proyectos h2,
+    #sobre-mi h2 {
+        font-size: 1.8rem;
+    }
+
+    .btn-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 28px;
+        height: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .btn-menu span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: var(--color-primario);
+        border-radius: 2px;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--color-blanco);
+        flex-direction: column;
+        padding: 1.5rem;
+        box-shadow: var(--sombra-lg);
+    }
+
+    .nav-links.activo {
+        display: flex;
+    }
+
+    .whatsapp-flotante {
+        width: 52px;
+        height: 52px;
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+    }
+
+    .whatsapp-flotante svg {
+        width: 28px;
+        height: 28px;
+    }
 }
