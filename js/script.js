@@ -52,3 +52,37 @@ formulario.addEventListener('submit', function(evento) {
     alert('¡Gracias ' + nombre + '! Tu mensaje fue recibido. Te contactaré pronto.');
     formulario.reset();
 });
+
+// ===== HEADER CON SOMBRA AL HACER SCROLL =====
+const header = document.querySelector('header');
+
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 10) {
+        header.classList.add('con-scroll');
+    } else {
+        header.classList.remove('con-scroll');
+    }
+});
+
+// ===== LINK ACTIVO SEGÚN SECCIÓN VISIBLE =====
+const todasLasSecciones = document.querySelectorAll('main section');
+const todosLosLinks = document.querySelectorAll('.nav-links a');
+
+const observadorMenu = new IntersectionObserver(function(entradas) {
+    entradas.forEach(function(entrada) {
+        if (entrada.isIntersecting) {
+            const idActual = entrada.target.getAttribute('id');
+
+            todosLosLinks.forEach(function(link) {
+                link.classList.remove('activo');
+                if (link.getAttribute('href') === '#' + idActual) {
+                    link.classList.add('activo');
+                }
+            });
+        }
+    });
+}, { threshold: 0.5 });
+
+todasLasSecciones.forEach(function(seccion) {
+    observadorMenu.observe(seccion);
+});

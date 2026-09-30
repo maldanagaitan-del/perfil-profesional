@@ -5,8 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miguel Aldana | Contador Público & Desarrollador</title>
-    <meta name="description" content="Miguel Aldana — Contador Público y estudiante de Ingeniería de Software. Asesoría contable, automatización de procesos y desarrollo web.">
+    <meta name="description"
+        content="Miguel Aldana — Contador Público y estudiante de Ingeniería de Software. Asesoría contable, automatización de procesos y desarrollo web.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
@@ -31,6 +38,10 @@
 
     <main>
         <section id="inicio">
+            <span class="badge-disponible">
+                <span class="punto-verde"></span>
+                Disponible para nuevos proyectos
+            </span>
             <h1>Miguel Aldana</h1>
             <p class="subtitulo">Contador Público & Futuro Ingeniero de Software</p>
             <p class="descripcion">
@@ -62,6 +73,7 @@
                         <li><strong>Enfoque</strong> en automatización y desarrollo</li>
                     </ul>
                 </div>
+            </div>
         </section>
 
         <section id="servicios" class="seccion-oculta">
@@ -69,6 +81,11 @@
             <div class="grid-servicios">
 
                 <article class="tarjeta-servicio">
+                    <div class="icono-servicio">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 14l2 2 4-4M7 3h10a2 2 0 012 2v14l-4-2-3 2-3-2-4 2V5a2 2 0 012-2z" />
+                        </svg>
+                    </div>
                     <h3>Asesoría Contable y Tributaria</h3>
                     <p>
                         Declaración de renta, planeación tributaria y acompañamiento
@@ -77,6 +94,13 @@
                 </article>
 
                 <article class="tarjeta-servicio">
+                    <div class="icono-servicio">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                        </svg>
+                    </div>
                     <h3>Automatización de Procesos</h3>
                     <p>
                         Automatizo tareas repetitivas en Excel, reportes financieros
@@ -85,6 +109,11 @@
                 </article>
 
                 <article class="tarjeta-servicio">
+                    <div class="icono-servicio">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
+                        </svg>
+                    </div>
                     <h3>Desarrollo Web</h3>
                     <p>
                         Creación de páginas web profesionales para negocios y
@@ -148,10 +177,29 @@
             <div class="datos-contacto-directo">
                 <p>También puedes escribirme directamente:</p>
                 <ul>
-                    <li>Correo: <a href="mailto:tucorreo@ejemplo.com">tucorreo@ejemplo.com</a></li>
-                    <li>WhatsApp: <a href="https://wa.me/57XXXXXXXXXX" target="_blank">Escríbeme por WhatsApp</a></li>
-                    <li>LinkedIn: <a href="https://linkedin.com/in/tu-usuario" target="_blank">Ver perfil de
-                            LinkedIn</a></li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16v16H4z" opacity="0" />
+                            <path d="M22 6l-10 7L2 6" />
+                            <path d="M2 6h20v12H2z" />
+                        </svg>
+                        <a href="mailto:tucorreo@ejemplo.com">tucorreo@ejemplo.com</a>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+                        </svg>
+                        <a href="https://wa.me/57XXXXXXXXXX" target="_blank">Escríbeme por WhatsApp</a>
+                    </li>
+                    <li>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
+                            <rect x="2" y="9" width="4" height="12" />
+                            <circle cx="4" cy="4" r="2" />
+                        </svg>
+                        <a href="https://linkedin.com/in/tu-usuario" target="_blank">Ver perfil de LinkedIn</a>
+                    </li>
                 </ul>
             </div>
         </section>
@@ -160,7 +208,7 @@
     <footer>
         <p>&copy; 2026 Miguel Aldana. Todos los derechos reservados.</p>
     </footer>
- 
+
     <script src="js/script.js"></script>
 
 </body>
