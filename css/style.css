@@ -7,6 +7,13 @@
 
 /* ===== VARIABLES DE DISEÑO ===== */
 :root {
+    [data-tema="oscuro"] {
+        --color-fondo: #0f172a;
+        --color-blanco: #1e293b;
+        --color-texto: #e2e8f0;
+        --color-texto-claro: #94a3b8;
+    }
+
     --color-primario: #1a3a5c;
     --color-secundario: #2e8b8b;
     --color-secundario-texto: #1f6363;
@@ -35,8 +42,14 @@
     --sombra-md: 0 2px 10px rgba(0, 0, 0, 0.06);
     --sombra-lg: 0 6px 20px rgba(0, 0, 0, 0.1);
 
-    --fuente-principal: 'Inter', 'Segoe UI', Arial, sans-serif;
-    --fuente-titulos: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    --fuente-principal: 'Inter',
+    'Segoe UI',
+    Arial,
+    sans-serif;
+    --fuente-titulos: 'Poppins',
+    'Segoe UI',
+    Arial,
+    sans-serif;
 
     --espaciado-seccion: var(--space-3xl) var(--space-xl);
     --ancho-maximo: 1100px;
@@ -512,6 +525,15 @@ footer {
     .nav-links.activo {
         display: flex;
     }
+
+    .grid-contadores {
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .numero-contador {
+        font-size: 1.5rem;
+    }
 }
 
 /* Si JavaScript no carga, el navegador ignora este selector avanzado
@@ -581,4 +603,219 @@ footer {
 
 .nav-links a.activo {
     color: var(--color-secundario-texto);
+}
+
+/* ===== BOTÓN WHATSAPP FLOTANTE ===== */
+.whatsapp-flotante {
+    position: fixed;
+    bottom: var(--space-xl);
+    right: var(--space-xl);
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    border-radius: var(--radio-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-blanco);
+    box-shadow: var(--sombra-lg);
+    z-index: 200;
+    transition: transform 0.2s ease;
+}
+
+.whatsapp-flotante svg {
+    width: 32px;
+    height: 32px;
+}
+
+.whatsapp-flotante:hover {
+    transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+    .whatsapp-flotante {
+        width: 52px;
+        height: 52px;
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+    }
+
+    .whatsapp-flotante svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* ===== SECCIÓN TESTIMONIOS ===== */
+#testimonios {
+    max-width: var(--ancho-maximo);
+    margin: 0 auto;
+    padding: var(--espaciado-seccion);
+}
+
+#testimonios h2 {
+    font-size: 2.2rem;
+    color: var(--color-primario);
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.grid-testimonios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+}
+
+.tarjeta-testimonio {
+    background-color: var(--color-blanco);
+    padding: var(--space-xl);
+    border-radius: var(--radio-md);
+    box-shadow: var(--sombra-md);
+}
+
+.cita-testimonio {
+    color: var(--color-texto);
+    font-style: italic;
+    margin-bottom: var(--space-lg);
+    line-height: 1.7;
+}
+
+.autor-testimonio {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.avatar-testimonio {
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border-radius: var(--radio-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.nombre-testimonio {
+    font-weight: 600;
+    color: var(--color-texto);
+    font-size: 0.95rem;
+}
+
+.cargo-testimonio {
+    color: var(--color-texto-claro);
+    font-size: 0.85rem;
+}
+
+/* ===== SECCIÓN FAQ ===== */
+#preguntas-frecuentes {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--espaciado-seccion);
+}
+
+#preguntas-frecuentes h2 {
+    font-size: 2.2rem;
+    color: var(--color-primario);
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.lista-faq {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.item-faq {
+    background-color: var(--color-blanco);
+    border-radius: var(--radio-md);
+    padding: var(--space-lg);
+    box-shadow: var(--sombra-md);
+}
+
+.item-faq summary {
+    font-weight: 600;
+    color: var(--color-primario);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.item-faq summary::after {
+    content: '+';
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-secundario-texto);
+    transition: transform 0.2s ease;
+}
+
+.item-faq[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.item-faq p {
+    color: var(--color-texto-claro);
+    margin-top: var(--space-md);
+    line-height: 1.7;
+}
+
+.btn-tema {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-texto);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-tema svg {
+    width: 22px;
+    height: 22px;
+}
+
+.icono-luna {
+    display: none;
+}
+
+[data-tema="oscuro"] .icono-sol {
+    display: none;
+}
+
+[data-tema="oscuro"] .icono-luna {
+    display: block;
+}
+
+.grid-contadores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    text-align: center;
+}
+
+.numero-contador {
+    display: block;
+    font-family: var(--fuente-titulos);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primario);
+}
+
+.contador p {
+    font-size: 0.85rem;
+    color: var(--color-texto-claro);
 }

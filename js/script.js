@@ -34,6 +34,7 @@ const seccionesOcultas = document.querySelectorAll('.seccion-oculta');
 seccionesOcultas.forEach(function(seccion) {
     observador.observe(seccion);
 });
+
 // ===== VALIDACIÓN Y ENVÍO DEL FORMULARIO =====
 const formulario = document.querySelector('.formulario-contacto');
 
@@ -49,8 +50,33 @@ formulario.addEventListener('submit', function(evento) {
         return;
     }
 
-    alert('¡Gracias ' + nombre + '! Tu mensaje fue recibido. Te contactaré pronto.');
-    formulario.reset();
+    const datosFormulario = new FormData(formulario);
+    const btnEnviar = formulario.querySelector('button');
+    const textoOriginalBoton = btnEnviar.textContent;
+
+    btnEnviar.textContent = 'Enviando...';
+    btnEnviar.disabled = true;
+
+    fetch(formulario.action, {
+        method: 'POST',
+        body: datosFormulario,
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(function(respuesta) {
+        if (respuesta.ok) {
+            alert('¡Gracias ' + nombre + '! Tu mensaje fue enviado. Te contactaré pronto.');
+            formulario.reset();
+        } else {
+            alert('Hubo un problema al enviar tu mensaje. Intenta de nuevo o escríbeme por WhatsApp.');
+        }
+    })
+    .catch(function() {
+        alert('Hubo un problema de conexión. Intenta de nuevo o escríbeme por WhatsApp.');
+    })
+    .finally(function() {
+        btnEnviar.textContent = textoOriginalBoton;
+        btnEnviar.disabled = false;
+    });
 });
 
 // ===== HEADER CON SOMBRA AL HACER SCROLL =====
@@ -85,4 +111,61 @@ const observadorMenu = new IntersectionObserver(function(entradas) {
 
 todasLasSecciones.forEach(function(seccion) {
     observadorMenu.observe(seccion);
+});
+
+// ===== MODO OSCURO =====
+const btnTema = document.getElementById('btnTema');
+const html = document.documentElement;
+
+const temaGuardado = localStorage.getItem('tema');
+if (temaGuardado === 'oscuro') {
+    html.setAttribute('data-tema', 'oscuro');
+}
+
+btnTema.addEventListener('click', function() {
+    const temaActual = html.getAttribute('data-tema');
+
+    if (temaActual === 'oscuro') {
+        html.removeAttribute('data-tema');
+        localStorage.setItem('tema', 'claro');
+    } else {
+        html.setAttribute('data-tema', 'oscuro');
+        localStorage.setItem('tema', 'oscuro');
+    }
+});
+
+// ===== CONTADORES ANIMADOS =====
+const contadores = document.querySelectorAll('.numero-contador');
+
+function animarContador(elemento) {
+    const meta = parseInt(elemento.getAttribute('data-hasta'));
+    const duracion = 1500;
+    const inicio = performance.now();
+
+    function actualizar(ahora) {
+        const progreso = Math.min((ahora - inicio) / duracion, 1);
+        const valorActual = Math.floor(progreso * meta);
+        elemento.textContent = valorActual;
+
+        if (progreso < 1) {
+            requestAnimationFrame(actualizar);
+        } else {
+            elemento.textContent = meta;
+        }
+    }
+
+    requestAnimationFrame(actualizar);
+}
+
+const observadorContadores = new IntersectionObserver(function(entradas) {
+    entradas.forEach(function(entrada) {
+        if (entrada.isIntersecting) {
+            animarContador(entrada.target);
+            observadorContadores.unobserve(entrada.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+contadores.forEach(function(contador) {
+    observadorContadores.observe(contador);
 });
