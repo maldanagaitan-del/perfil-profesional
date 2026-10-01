@@ -8,9 +8,12 @@
 /* ===== VARIABLES DE DISEÑO ===== */
 :root {
     --color-primario: #1a3a5c;
+    --color-encabezado: #1a3a5c;
     --color-secundario: #2e8b8b;
     --color-secundario-texto: #1f6363;
     --color-fondo: #f9f9f9;
+    --color-superficie: #ffffff;
+    --color-borde: #e0e0e0;
     --color-texto: #333333;
     --color-texto-claro: #666666;
     --color-blanco: #ffffff;
@@ -34,6 +37,10 @@
     --sombra-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
     --sombra-md: 0 2px 10px rgba(0, 0, 0, 0.06);
     --sombra-lg: 0 6px 20px rgba(0, 0, 0, 0.1);
+    --sombra-boton: 0 10px 25px -5px rgba(26, 58, 92, 0.4);
+    --sombra-boton-hover: 0 15px 30px -5px rgba(26, 58, 92, 0.5);
+    --color-glow: rgba(46, 139, 139, 0.15);
+    --header-glass: rgba(255, 255, 255, 0.7);
 
     --fuente-principal: 'Inter', 'Segoe UI', Arial, sans-serif;
     --fuente-titulos: 'Poppins', 'Segoe UI', Arial, sans-serif;
@@ -42,12 +49,23 @@
     --ancho-maximo: 1100px;
 }
 
-/* ===== MODO OSCURO (corregido: ya no anidado dentro de :root) ===== */
+/* ===== MODO OSCURO (corregido: ya no anidado dentro de :root) =====
+   Nota: --color-blanco NO se redefine aquí a propósito — se mantiene
+   blanco siempre, porque se usa como color de TEXTO sobre fondos de
+   color (botones, footer, avatar), no como fondo. El fondo de tarjetas
+   usa --color-superficie, que sí cambia. */
 [data-tema="oscuro"] {
     --color-fondo: #0f172a;
-    --color-blanco: #1e293b;
+    --color-superficie: #1e293b;
+    --color-borde: rgba(255, 255, 255, 0.12);
     --color-texto: #e2e8f0;
     --color-texto-claro: #94a3b8;
+    --color-encabezado: #7db8e8;
+    --color-secundario-texto: #5eead4;
+    --sombra-boton: 0 10px 25px -5px rgba(94, 234, 212, 0.25);
+    --sombra-boton-hover: 0 15px 35px -5px rgba(94, 234, 212, 0.35);
+    --color-glow: rgba(94, 234, 212, 0.12);
+    --header-glass: rgba(15, 23, 42, 0.7);
 }
 
 body {
@@ -66,7 +84,10 @@ h3,
 
 /* ===== HEADER Y NAVEGACIÓN ===== */
 header {
-    background-color: var(--color-blanco);
+    background-color: var(--header-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-borde);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -90,7 +111,7 @@ nav {
 .logo {
     font-size: 1.4rem;
     font-weight: bold;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
 }
 
 .btn-tema {
@@ -133,36 +154,75 @@ nav {
 }
 
 .nav-links a {
+    position: relative;
     text-decoration: none;
     color: var(--color-texto);
     font-weight: 500;
+    padding-bottom: 4px;
     transition: color 0.2s ease;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-secundario-texto);
+    transition: width 0.25s ease;
 }
 
 .nav-links a:hover {
     color: var(--color-secundario-texto);
 }
 
+.nav-links a:hover::after,
+.nav-links a.activo::after {
+    width: 100%;
+}
+
 .nav-links a.activo {
     color: var(--color-secundario-texto);
+    font-weight: 600;
 }
 
 /* ===== SECCIÓN INICIO (HERO) ===== */
 #inicio {
+    position: relative;
+    overflow: hidden;
     max-width: var(--ancho-maximo);
     margin: 0 auto;
     padding: var(--espaciado-seccion);
     text-align: center;
-    background-image: radial-gradient(circle at 1px 1px, #e0e0e0 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, var(--color-borde) 1px, transparent 0);
     background-size: 24px 24px;
+}
+
+#inicio::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--color-glow), transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+#inicio > * {
+    position: relative;
+    z-index: 1;
 }
 
 .badge-disponible {
     display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
-    background-color: var(--color-blanco);
-    border: 1px solid #e0e0e0;
+    background-color: var(--color-superficie);
+    border: 1px solid var(--color-borde);
     padding: var(--space-xs) var(--space-md);
     border-radius: 100px;
     font-size: 0.85rem;
@@ -194,9 +254,23 @@ nav {
 }
 
 #inicio h1 {
-    font-size: 3rem;
-    color: var(--color-primario);
+    font-size: 3.75rem;
+    letter-spacing: -0.02em;
+    color: var(--color-encabezado);
     margin-bottom: 0.5rem;
+}
+
+/* Mejora progresiva: solo navegadores que soportan recortar el
+   fondo con la forma del texto reciben el efecto de degradado.
+   El resto se queda con el color solido de arriba, que sigue
+   viendose perfectamente bien. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+    #inicio h1 {
+        background: linear-gradient(135deg, var(--color-encabezado), var(--color-secundario-texto));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
 }
 
 .subtitulo {
@@ -217,13 +291,14 @@ nav {
     display: inline-block;
     position: relative;
     overflow: hidden;
-    background-color: var(--color-primario);
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
     color: var(--color-blanco);
     text-decoration: none;
     padding: 0.9rem 2rem;
     border-radius: var(--radio-sm);
     font-weight: 600;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: var(--sombra-boton);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .btn-principal::before {
@@ -242,8 +317,8 @@ nav {
 }
 
 .btn-principal:hover {
-    background-color: var(--color-secundario);
-    transform: translateY(-2px);
+    box-shadow: var(--sombra-boton-hover);
+    transform: translateY(-3px);
 }
 
 /* ===== SECCIÓN SOBRE MÍ ===== */
@@ -255,7 +330,7 @@ nav {
 
 #sobre-mi h2 {
     font-size: 2.2rem;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 2rem;
     text-align: center;
 }
@@ -286,7 +361,7 @@ nav {
 
 .datos-clave li {
     padding: 0.5rem 0;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--color-borde);
 }
 
 .datos-clave li:last-child {
@@ -323,23 +398,55 @@ nav {
 
 #servicios h2 {
     font-size: 2.2rem;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 2.5rem;
     text-align: center;
 }
 
 .grid-servicios {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     gap: 2rem;
 }
 
 .tarjeta-servicio {
-    background-color: var(--color-blanco);
+    background-color: var(--color-superficie);
     padding: 2rem;
     border-radius: var(--radio-md);
     box-shadow: var(--sombra-md);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Bento: la 2a tarjeta (tu diferenciador, Automatización) ocupa
+   toda la columna derecha, abarcando las 2 filas */
+.tarjeta-servicio:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.tarjeta-servicio:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    background: linear-gradient(160deg, var(--color-superficie), var(--color-glow));
+}
+
+.tarjeta-servicio:nth-child(2) .icono-servicio {
+    width: 60px;
+    height: 60px;
+}
+
+.tarjeta-servicio:nth-child(2) .icono-servicio svg {
+    width: 30px;
+    height: 30px;
+}
+
+.tarjeta-servicio:nth-child(3) {
+    grid-column: 1;
+    grid-row: 2;
 }
 
 .tarjeta-servicio:hover {
@@ -379,12 +486,12 @@ nav {
     max-width: var(--ancho-maximo);
     margin: 0 auto;
     padding: var(--espaciado-seccion);
-    background-color: var(--color-blanco);
+    background-color: var(--color-superficie);
 }
 
 #proyectos h2 {
     font-size: 2.2rem;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 2.5rem;
     text-align: center;
 }
@@ -408,7 +515,7 @@ nav {
 }
 
 .tarjeta-proyecto h3 {
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 0.8rem;
     font-size: 1.2rem;
 }
@@ -426,7 +533,7 @@ nav {
 
 #testimonios h2 {
     font-size: 2.2rem;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 2.5rem;
     text-align: center;
 }
@@ -438,7 +545,7 @@ nav {
 }
 
 .tarjeta-testimonio {
-    background-color: var(--color-blanco);
+    background-color: var(--color-superficie);
     padding: var(--space-xl);
     border-radius: var(--radio-md);
     box-shadow: var(--sombra-md);
@@ -491,7 +598,7 @@ nav {
 
 #preguntas-frecuentes h2 {
     font-size: 2.2rem;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 2.5rem;
     text-align: center;
 }
@@ -503,7 +610,7 @@ nav {
 }
 
 .item-faq {
-    background-color: var(--color-blanco);
+    background-color: var(--color-superficie);
     border-radius: var(--radio-md);
     padding: var(--space-lg);
     box-shadow: var(--sombra-md);
@@ -511,7 +618,7 @@ nav {
 
 .item-faq summary {
     font-weight: 600;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     cursor: pointer;
     list-style: none;
     display: flex;
@@ -551,7 +658,7 @@ nav {
 
 #contacto h2 {
     font-size: 2.2rem;
-    color: var(--color-primario);
+    color: var(--color-encabezado);
     margin-bottom: 0.5rem;
 }
 
@@ -577,10 +684,12 @@ nav {
 .formulario-contacto input,
 .formulario-contacto textarea {
     padding: 0.8rem;
-    border: 1px solid #d0d0d0;
+    border: 1px solid var(--color-borde);
     border-radius: var(--radio-sm);
     font-family: var(--fuente-principal);
     font-size: 1rem;
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
 }
 
 .formulario-contacto input:focus,
@@ -742,6 +851,14 @@ footer {
     .grid-servicios,
     .grid-proyectos {
         grid-template-columns: 1fr;
+        grid-template-rows: none;
+    }
+
+    .tarjeta-servicio:nth-child(1),
+    .tarjeta-servicio:nth-child(2),
+    .tarjeta-servicio:nth-child(3) {
+        grid-column: auto;
+        grid-row: auto;
     }
 
     :root {
@@ -778,7 +895,7 @@ footer {
         display: block;
         width: 100%;
         height: 3px;
-        background-color: var(--color-primario);
+        background-color: var(--color-texto);
         border-radius: 2px;
     }
 
@@ -788,7 +905,7 @@ footer {
         top: 100%;
         left: 0;
         width: 100%;
-        background-color: var(--color-blanco);
+        background-color: var(--color-superficie);
         flex-direction: column;
         padding: 1.5rem;
         box-shadow: var(--sombra-lg);
