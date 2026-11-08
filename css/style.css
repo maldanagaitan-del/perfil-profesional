@@ -48,7 +48,7 @@
     --color-glow: rgba(94, 234, 212, 0.12);
     --color-pie: rgba(8, 13, 26, 0.92);
 
-    /* Fondos semitransparentes: dejan ver las figuras animadas del
+    /* Fondos semitransparentes: dejan ver la constelación animada del
        fondo a través de tarjetas y franjas, y así la página no se
        ve plana. --color-tarjeta cambia según la franja (.seccion--alterna). */
     --color-tarjeta: rgba(30, 41, 59, 0.72);
@@ -186,74 +186,13 @@ section[id] {
     }
 }
 
-/* Figuras geométricas pequeñas que suben girando */
-.figura {
+/* Constelación: lienzo (canvas) a pantalla completa donde JavaScript
+   dibuja los puntos y las líneas. Va encima de los orbes. */
+#constelacion {
     position: absolute;
-    bottom: -60px;
-    opacity: 0;
-    will-change: transform, opacity;
-    animation: subir-figura linear infinite;
-}
-
-.figura--anillo {
-    width: 46px;
-    height: 46px;
-    border: 2px solid rgba(94, 234, 212, 0.35);
-    border-radius: 50%;
-}
-
-.figura--cuadro {
-    width: 34px;
-    height: 34px;
-    border: 2px solid rgba(125, 184, 232, 0.35);
-    border-radius: 6px;
-}
-
-.figura--punto {
-    width: 10px;
-    height: 10px;
-    background-color: rgba(94, 234, 212, 0.5);
-    border-radius: 50%;
-}
-
-/* Cruz "+" dibujada con dos degradados (sin imágenes) */
-.figura--cruz {
-    width: 22px;
-    height: 22px;
-    background:
-        linear-gradient(rgba(125, 184, 232, 0.45), rgba(125, 184, 232, 0.45)) center / 100% 2px no-repeat,
-        linear-gradient(rgba(125, 184, 232, 0.45), rgba(125, 184, 232, 0.45)) center / 2px 100% no-repeat;
-}
-
-/* Posición horizontal, duración y retraso distintos para cada figura:
-   el retraso negativo hace que ya estén a mitad de camino al cargar */
-.f1 { left: 8%;  animation-duration: 28s; animation-delay: -4s; }
-.f2 { left: 22%; animation-duration: 34s; animation-delay: -18s; }
-.f3 { left: 38%; animation-duration: 24s; animation-delay: -10s; }
-.f4 { left: 55%; animation-duration: 38s; animation-delay: -26s; }
-.f5 { left: 70%; animation-duration: 30s; animation-delay: -2s; }
-.f6 { left: 84%; animation-duration: 26s; animation-delay: -14s; }
-.f7 { left: 92%; animation-duration: 36s; animation-delay: -30s; }
-.f8 { left: 30%; animation-duration: 40s; animation-delay: -6s; }
-
-@keyframes subir-figura {
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-115vh) rotate(360deg);
-        opacity: 0;
-    }
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -1410,14 +1349,7 @@ header nav {
         text-align: center;
     }
 
-    /* En celular: menos figuras (ahorra batería) y orbes más chicos */
-    .f2,
-    .f4,
-    .f7,
-    .f8 {
-        display: none;
-    }
-
+    /* En celular: orbes más chicos */
     .orbe--1,
     .orbe--2 {
         width: 380px;

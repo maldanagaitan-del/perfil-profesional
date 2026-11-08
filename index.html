@@ -110,20 +110,14 @@
          con teclado o lector de pantalla saltarse el menú. -->
     <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
 
-    <!-- Fondo animado: figuras decorativas detrás de todo el contenido.
+    <!-- Fondo animado: luces y constelación detrás de todo el contenido.
          aria-hidden="true" = los lectores de pantalla lo ignoran. -->
     <div class="fondo-animado" aria-hidden="true">
         <span class="orbe orbe--1"></span>
         <span class="orbe orbe--2"></span>
         <span class="orbe orbe--3"></span>
-        <span class="figura figura--anillo f1"></span>
-        <span class="figura figura--cuadro f2"></span>
-        <span class="figura figura--punto f3"></span>
-        <span class="figura figura--cuadro f4"></span>
-        <span class="figura figura--anillo f5"></span>
-        <span class="figura figura--punto f6"></span>
-        <span class="figura figura--cruz f7"></span>
-        <span class="figura figura--cruz f8"></span>
+        <!-- Constelación: la dibuja JavaScript (iniciarConstelacion) -->
+        <canvas id="constelacion"></canvas>
     </div>
 
     <header>
