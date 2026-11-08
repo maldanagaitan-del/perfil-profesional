@@ -17,6 +17,9 @@
     --color-texto: #333333;
     --color-texto-claro: #666666;
     --color-blanco: #ffffff;
+    --color-error: #b42318;
+    --color-exito: #15803d;
+    --color-foco: #1f6363;
 
     /* ===== ESCALA DE ESPACIADO ===== */
     --space-2xs: 0.25rem;
@@ -66,6 +69,9 @@
     --sombra-boton-hover: 0 15px 35px -5px rgba(94, 234, 212, 0.35);
     --color-glow: rgba(94, 234, 212, 0.12);
     --header-glass: rgba(15, 23, 42, 0.7);
+    --color-error: #fca5a5;
+    --color-exito: #86efac;
+    --color-foco: #5eead4;
 }
 
 body {
@@ -80,6 +86,40 @@ h2,
 h3,
 .logo {
     font-family: var(--fuente-titulos);
+}
+
+/* ===== ACCESIBILIDAD: FOCO VISIBLE =====
+   :focus-visible solo se activa al navegar con teclado (no al hacer
+   clic con el mouse), así el anillo no molesta visualmente pero quien
+   usa Tab siempre sabe dónde está. */
+:focus-visible {
+    outline: 3px solid var(--color-foco);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+/* <main> recibe el foco desde "Saltar al contenido"; no necesita anillo */
+main:focus {
+    outline: none;
+}
+
+/* ===== ACCESIBILIDAD: SALTAR AL CONTENIDO ===== */
+.saltar-contenido {
+    position: absolute;
+    top: -100px;
+    left: var(--space-md);
+    z-index: 300;
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radio-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.saltar-contenido:focus {
+    top: var(--space-md);
 }
 
 /* ===== HEADER Y NAVEGACIÓN ===== */
@@ -720,9 +760,14 @@ nav {
     margin-bottom: 3rem;
 }
 
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
 .formulario-contacto label {
     font-weight: 600;
-    margin-bottom: -0.7rem;
     color: var(--color-texto);
 }
 
@@ -739,8 +784,58 @@ nav {
 
 .formulario-contacto input:focus,
 .formulario-contacto textarea:focus {
-    outline: none;
-    border-color: var(--color-secundario);
+    outline: 2px solid var(--color-foco);
+    outline-offset: 1px;
+    border-color: var(--color-foco);
+}
+
+/* Campo con error: lo marca JavaScript con aria-invalid="true" */
+.formulario-contacto [aria-invalid="true"] {
+    border-color: var(--color-error);
+}
+
+.error-campo {
+    color: var(--color-error);
+    font-size: 0.85rem;
+    font-weight: 500;
+    min-height: 1.2em;
+}
+
+.error-campo:empty {
+    min-height: 0;
+}
+
+/* Honeypot: fuera de la pantalla (no display:none, que algunos bots detectan) */
+.campo-trampa {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.estado-formulario {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radio-sm);
+    border: 1px solid currentColor;
+    font-weight: 500;
+}
+
+.estado-formulario:empty {
+    display: none;
+}
+
+.estado-formulario.exito {
+    color: var(--color-exito);
+}
+
+.estado-formulario.error {
+    color: var(--color-error);
+}
+
+.estado-formulario a {
+    color: inherit;
+    font-weight: 700;
 }
 
 .formulario-contacto button {
@@ -757,6 +852,16 @@ nav {
 
 .formulario-contacto button:hover {
     background-color: var(--color-secundario);
+}
+
+.formulario-contacto button:disabled {
+    opacity: 0.7;
+    cursor: progress;
+}
+
+/* Necesario para que el honeypot (position: absolute) no se salga */
+.formulario-contacto {
+    position: relative;
 }
 
 .datos-contacto-directo ul {
@@ -873,6 +978,20 @@ footer {
         height: 3px;
         background-color: var(--color-texto);
         border-radius: 2px;
+        transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    /* Menú abierto: las 3 rayas se convierten en una X */
+    .btn-menu[aria-expanded="true"] span:nth-child(1) {
+        transform: translateY(8.5px) rotate(45deg);
+    }
+
+    .btn-menu[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .btn-menu[aria-expanded="true"] span:nth-child(3) {
+        transform: translateY(-8.5px) rotate(-45deg);
     }
 
     .nav-links {
@@ -976,5 +1095,29 @@ footer {
     .whatsapp-flotante svg {
         width: 28px;
         height: 28px;
+    }
+}
+
+/* ===================================== */
+/* ===== MOVIMIENTO REDUCIDO ===== */
+/* ===================================== */
+
+/* Personas con sensibilidad al movimiento (vértigo, migraña) pueden
+   pedir a su sistema operativo "reducir movimiento". Aquí se respeta:
+   sin animaciones, sin desplazamientos y secciones visibles desde ya. */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .seccion-oculta {
+        opacity: 1;
+        transform: none;
     }
 }

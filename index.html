@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miguel Aldana | Contador Público & Desarrollador</title>
     <meta name="description"
-        content="Asesoría contable, automatización de procesos y desarrollo web, combinando más de 5 años de experiencia contable con formación en Ingeniería en Programación de Software.">
+        content="Asesoría contable, automatización de procesos y desarrollo web, combinando más de 5 años de experiencia contable con formación en Ingeniería en Programación Software.">
 
     <!-- Tema: se aplica ANTES de pintar la página para evitar el parpadeo
          claro -> oscuro. Prioridad: 1) lo que el visitante eligió antes,
@@ -27,7 +27,7 @@
     <meta property="og:url" content="https://maldanagaitan-del.github.io/perfil-profesional/">
     <meta property="og:title" content="Miguel Aldana | Contador Público & Desarrollador">
     <meta property="og:description"
-        content="Asesoría contable, automatización de procesos y desarrollo web, combinando más de 5 años de experiencia contable con formación en Ingeniería en Programación de Software.">
+        content="Asesoría contable, automatización de procesos y desarrollo web, combinando más de 5 años de experiencia contable con formación en Ingeniería en Programación Software.">
     <meta property="og:image" content="https://maldanagaitan-del.github.io/perfil-profesional/img/og-portada.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -64,6 +64,10 @@
 
 <body>
 
+    <!-- Enlace oculto que aparece al presionar Tab: permite a quien navega
+         con teclado o lector de pantalla saltarse el menú. -->
+    <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
+
     <header>
         <nav aria-label="Navegación principal">
             <a href="#inicio" class="logo">Miguel Aldana</a>
@@ -79,7 +83,7 @@
                     <li><a href="#preguntas-frecuentes">FAQ</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
-                <button class="btn-tema" id="btnTema" aria-label="Cambiar tema">
+                <button class="btn-tema" id="btnTema" type="button" aria-label="Modo oscuro" aria-pressed="false">
                     <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <circle cx="12" cy="12" r="5" />
                         <path
@@ -89,16 +93,17 @@
                         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
                     </svg>
                 </button>
-                <button class="btn-menu" id="btnMenu" aria-label="Abrir menú">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <button class="btn-menu" id="btnMenu" type="button" aria-label="Abrir menú"
+                    aria-expanded="false" aria-controls="navLinks">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
                 </button>
             </div>
         </nav>
     </header>
 
-    <main>
+    <main id="contenido" tabindex="-1">
         <section id="inicio">
             <span class="badge-disponible">
                 <span class="punto-verde"></span>
@@ -123,7 +128,7 @@
                     <p>
                         Soy Contador Público titulado con más de 5 años de experiencia
                         profesional en contabilidad y tributación. Actualmente curso
-                        Ingeniería en Programación de Software, una formación que me
+                        Ingeniería en Programación Software, una formación que me
                         permite unir dos mundos que pocas veces se encuentran: el
                         conocimiento contable y el desarrollo de soluciones tecnológicas.
                     </p>
@@ -145,7 +150,7 @@
                         </div>
                         <div class="contador">
                             <span class="valor-destacado">En curso</span>
-                            <p>Ingeniería en Programación de Software</p>
+                            <p>Ingeniería en Programación Software</p>
                         </div>
                         <div class="contador">
                             <span class="valor-destacado">Remoto</span>
@@ -325,17 +330,44 @@
             <h2>Contacto</h2>
             <p>¿Tienes un proyecto en mente? Escríbeme y hablemos.</p>
 
-            <form class="formulario-contacto" action="https://formspree.io/f/mljdzayr" method="POST">
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" required>
+            <!-- novalidate: desactiva las burbujas nativas del navegador para que
+                 JavaScript muestre los errores debajo de cada campo. Si JS no
+                 carga, el formulario igual se envía a Formspree. -->
+            <form class="formulario-contacto" id="formContacto" action="https://formspree.io/f/mljdzayr"
+                method="POST" novalidate>
+                <div class="campo">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" autocomplete="name" required minlength="2"
+                        aria-describedby="error-nombre">
+                    <p class="error-campo" id="error-nombre"></p>
+                </div>
 
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" required>
+                <div class="campo">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required
+                        aria-describedby="error-email">
+                    <p class="error-campo" id="error-email"></p>
+                </div>
 
-                <label for="mensaje">Mensaje</label>
-                <textarea id="mensaje" name="mensaje" rows="5" required></textarea>
+                <div class="campo">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" required minlength="10"
+                        aria-describedby="error-mensaje"></textarea>
+                    <p class="error-campo" id="error-mensaje"></p>
+                </div>
+
+                <!-- Antispam (honeypot): campo invisible para personas. Los bots
+                     lo llenan y Formspree descarta esos envíos. -->
+                <div class="campo-trampa" aria-hidden="true">
+                    <label for="_gotcha">No llenes este campo</label>
+                    <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+                </div>
 
                 <button type="submit">Enviar mensaje</button>
+
+                <!-- role="status" + aria-live: los lectores de pantalla anuncian
+                     el resultado del envío sin mover el foco. -->
+                <p class="estado-formulario" id="estadoFormulario" role="status" aria-live="polite"></p>
             </form>
 
             <div class="datos-contacto-directo">
