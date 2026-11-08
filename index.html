@@ -72,16 +72,16 @@
         <nav aria-label="Navegación principal">
             <a href="#inicio" class="logo">Miguel Aldana</a>
 
-            <!-- Agrupa enlaces + botones a la derecha. En escritorio el botón
-                 de tema queda junto al menú (antes flotaba en el centro). -->
             <div class="nav-acciones">
                 <ul class="nav-links" id="navLinks">
                     <li><a href="#inicio">Inicio</a></li>
                     <li><a href="#sobre-mi">Sobre mí</a></li>
                     <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#proceso">Cómo trabajo</a></li>
                     <li><a href="#proyectos">Proyectos</a></li>
                     <li><a href="#preguntas-frecuentes">FAQ</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
+                    <!-- El último enlace se ve como botón: es la acción principal -->
+                    <li><a href="#contacto" class="nav-cta">Contacto</a></li>
                 </ul>
                 <button class="btn-tema" id="btnTema" type="button" aria-label="Modo oscuro" aria-pressed="false">
                     <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -103,26 +103,51 @@
         </nav>
     </header>
 
+    <!-- ESTRUCTURA DE CADA SECCIÓN
+         <section class="seccion">        franja a todo el ancho (fondo)
+           <div class="contenedor">       ancho máximo y centrado
+         "seccion--alterna" cambia el fondo para separar visualmente
+         las franjas. La animación de aparición va en el contenedor,
+         así el fondo de la franja nunca queda "vacío". -->
     <main id="contenido" tabindex="-1">
-        <section id="inicio">
-            <span class="badge-disponible">
-                <span class="punto-verde"></span>
-                Disponible para nuevos proyectos
-            </span>
-            <h1>Miguel Aldana</h1>
-            <p class="subtitulo">Contador Público · Tecnología y Automatización</p>
-            <p class="descripcion">
-                Ayudo a empresas y profesionales a optimizar sus procesos financieros
-                y contables mediante automatización y soluciones tecnológicas a medida.
-            </p>
-            <a href="#contacto" class="btn-principal">Hablemos de tu proyecto</a>
+
+        <!-- ===== INICIO (HERO) ===== -->
+        <section id="inicio" class="hero">
+            <div class="contenedor hero-grid">
+                <div class="hero-texto">
+                    <span class="badge-disponible">
+                        <span class="punto-verde"></span>
+                        Disponible para nuevos proyectos
+                    </span>
+                    <p class="hero-nombre">Miguel Aldana · Contador Público</p>
+                    <h1>
+                        Contabilidad y tecnología para que tu negocio
+                        <span class="resaltado">dedique menos tiempo a tareas manuales</span>
+                    </h1>
+                    <p class="descripcion">
+                        Ayudo a empresas y profesionales a optimizar sus procesos financieros
+                        y contables mediante automatización y soluciones tecnológicas a medida.
+                    </p>
+                    <div class="hero-acciones">
+                        <a href="#contacto" class="btn-principal">Hablemos de tu proyecto</a>
+                        <a href="#servicios" class="btn-secundario">Ver servicios</a>
+                    </div>
+                </div>
+
+                <div class="hero-foto">
+                    <!-- La foto es lo primero que se ve: se carga con prioridad
+                         (sin loading="lazy") para no retrasar la página. -->
+                    <img src="img/foto-perfil.webp" alt="Miguel Aldana, Contador Público" width="336" height="336"
+                        fetchpriority="high" decoding="async">
+                    <span class="hero-credencial">Contador Público titulado · +5 años</span>
+                </div>
+            </div>
         </section>
 
-        <section id="sobre-mi" class="seccion-oculta">
-            <h2>Sobre mí</h2>
-            <div class="contenido-sobre-mi">
-                <img src="img/foto-perfil.webp" alt="Miguel Aldana, Contador Público" width="280" height="280"
-                    loading="lazy" decoding="async">
+        <!-- ===== SOBRE MÍ ===== -->
+        <section id="sobre-mi" class="seccion seccion--alterna">
+            <div class="contenedor contenedor--angosto seccion-oculta">
+                <h2 class="titulo-seccion">Sobre mí</h2>
                 <div class="texto-sobre-mi">
                     <!-- BORRADOR: revisa y ajusta este texto con tus palabras -->
                     <p>
@@ -139,269 +164,378 @@
                         desde adentro, puedo proponer automatizaciones que se ajustan a la
                         forma real en que trabaja cada negocio.
                     </p>
+                </div>
 
-                    <!-- Solo datos verificables. El contador conserva su animación,
-                         pero el HTML ya trae el valor final (5) para que Google y
-                         quien navegue sin JavaScript no vean "0". -->
-                    <div class="grid-contadores">
-                        <div class="contador">
-                            <span class="valor-destacado">+<span class="numero-contador" data-hasta="5">5</span></span>
-                            <p>Años de experiencia contable</p>
-                        </div>
-                        <div class="contador">
-                            <span class="valor-destacado">En curso</span>
-                            <p>Ingeniería en Programación Software</p>
-                        </div>
-                        <div class="contador">
-                            <span class="valor-destacado">Remoto</span>
-                            <p>Atención en toda Colombia</p>
-                        </div>
+                <!-- Solo datos verificables. El HTML trae el valor final (5) para
+                     que Google y quien navegue sin JavaScript no vean "0". -->
+                <div class="grid-contadores">
+                    <div class="contador">
+                        <span class="valor-destacado">+<span class="numero-contador" data-hasta="5">5</span></span>
+                        <p>Años de experiencia contable</p>
                     </div>
-
+                    <div class="contador">
+                        <span class="valor-destacado">En curso</span>
+                        <p>Ingeniería en Programación Software</p>
+                    </div>
+                    <div class="contador">
+                        <span class="valor-destacado">Remoto</span>
+                        <p>Atención en toda Colombia</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="servicios" class="seccion-oculta">
-            <h2>Servicios</h2>
-            <div class="grid-servicios">
+        <!-- ===== SERVICIOS ===== -->
+        <section id="servicios" class="seccion">
+            <div class="contenedor seccion-oculta">
+                <h2 class="titulo-seccion">Servicios</h2>
+                <p class="intro-seccion">
+                    Tres formas de ayudarte, desde la parte contable hasta la tecnológica.
+                </p>
 
-                <article class="tarjeta-servicio">
-                    <div class="icono-servicio">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <div class="grid-servicios">
+
+                    <article class="tarjeta-servicio">
+                        <div class="icono-servicio">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M9 14l2 2 4-4M7 3h10a2 2 0 012 2v14l-4-2-3 2-3-2-4 2V5a2 2 0 012-2z" />
                         </svg>
-                    </div>
-                    <h3>Asesoría Contable y Tributaria</h3>
-                    <p>
-                        Declaración de renta, planeación tributaria y acompañamiento
-                        contable para personas naturales y empresas.
-                    </p>
-                </article>
+                        </div>
+                        <h3>Asesoría Contable y Tributaria</h3>
+                        <p>
+                            Declaración de renta, planeación tributaria y acompañamiento
+                            contable para personas naturales y empresas.
+                        </p>
+                        <ul class="lista-incluye" aria-label="Qué incluye">
+                            <li>Declaración de renta</li>
+                            <li>Planeación tributaria</li>
+                            <li>Acompañamiento contable para personas y empresas</li>
+                        </ul>
+                        <a class="enlace-servicio" href="https://wa.me/573142389938?text=Hola%20Miguel%2C%20me%20interesa%20la%20asesor%C3%ADa%20contable%20y%20tributaria."
+                            target="_blank" rel="noopener">
+                            Consultar por WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        </a>
+                    </article>
 
-                <article class="tarjeta-servicio">
-                    <div class="icono-servicio">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <!-- Tarjeta destacada (bento): es el servicio diferenciador -->
+                    <article class="tarjeta-servicio tarjeta-servicio--destacada">
+                        <span class="etiqueta-destacada">Mi diferencial</span>
+                        <div class="icono-servicio">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <circle cx="12" cy="12" r="3" />
                             <path
                                 d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
                         </svg>
-                    </div>
-                    <h3>Automatización de Procesos</h3>
-                    <p>
-                        Automatizo tareas repetitivas en Excel, reportes financieros
-                        y flujos de trabajo administrativos para ahorrarte tiempo.
-                    </p>
-                </article>
+                        </div>
+                        <h3>Automatización de Procesos</h3>
+                        <p>
+                            Automatizo tareas repetitivas en Excel, reportes financieros
+                            y flujos de trabajo administrativos para ahorrarte tiempo.
+                        </p>
+                        <ul class="lista-incluye" aria-label="Qué incluye">
+                            <li>Tareas repetitivas en Excel</li>
+                            <li>Reportes financieros automáticos</li>
+                            <li>Flujos de trabajo administrativos</li>
+                        </ul>
+                        <a class="enlace-servicio" href="https://wa.me/573142389938?text=Hola%20Miguel%2C%20me%20interesa%20automatizar%20procesos%20en%20mi%20empresa."
+                            target="_blank" rel="noopener">
+                            Consultar por WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        </a>
+                    </article>
 
-                <article class="tarjeta-servicio">
-                    <div class="icono-servicio">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <article class="tarjeta-servicio">
+                        <div class="icono-servicio">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
                         </svg>
-                    </div>
-                    <h3>Desarrollo Web</h3>
-                    <p>
-                        Creación de páginas web profesionales para negocios y
-                        profesionales independientes, como esta misma.
-                    </p>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- PENDIENTE: reemplazar estos proyectos por casos reales confirmados -->
-        <section id="proyectos" class="seccion-oculta">
-            <h2>Proyectos</h2>
-            <div class="grid-proyectos">
-
-                <article class="tarjeta-proyecto">
-                    <h3>Automatización de Reportes Financieros</h3>
-                    <p>
-                        Desarrollo de una herramienta en Excel/VBA para generar
-                        reportes financieros mensuales automáticamente, reduciendo
-                        el tiempo de elaboración de 3 días a 2 horas.
-                    </p>
-                    <div class="etiquetas-proyecto">
-                        <span class="etiqueta">Excel</span>
-                        <span class="etiqueta">VBA</span>
-                        <span class="etiqueta">Automatización</span>
-                    </div>
-                </article>
-
-                <article class="tarjeta-proyecto">
-                    <h3>Sistema de Control de Inventario</h3>
-                    <p>
-                        Aplicación web para gestión de inventario de una pequeña
-                        empresa, con registro de entradas, salidas y alertas de
-                        stock mínimo.
-                    </p>
-                    <div class="etiquetas-proyecto">
-                        <span class="etiqueta">JavaScript</span>
-                        <span class="etiqueta">HTML/CSS</span>
-                        <span class="etiqueta">Base de datos</span>
-                    </div>
-                </article>
-
-                <article class="tarjeta-proyecto">
-                    <h3>Página Web Profesional</h3>
-                    <p>
-                        Este mismo sitio: diseñado y desarrollado desde cero como
-                        parte de mi transición hacia el desarrollo de software.
-                    </p>
-                    <div class="etiquetas-proyecto">
-                        <span class="etiqueta">HTML</span>
-                        <span class="etiqueta">CSS</span>
-                        <span class="etiqueta">JavaScript</span>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- TESTIMONIOS: desactivado hasta tener testimonios reales.
-             Para reactivarlo: quita los marcadores de comentario y vuelve a
-             agregar <li><a href="#testimonios">Testimonios</a></li> al menú.
-             Los estilos (.tarjeta-testimonio, etc.) se conservan en style.css.
-
-        <section id="testimonios" class="seccion-oculta">
-            <h2>Lo que dicen mis clientes</h2>
-            <div class="grid-testimonios">
-                <article class="tarjeta-testimonio">
-                    <p class="cita-testimonio">"[Texto real del cliente]"</p>
-                    <div class="autor-testimonio">
-                        <div class="avatar-testimonio">XX</div>
-                        <div>
-                            <p class="nombre-testimonio">[Nombre del cliente]</p>
-                            <p class="cargo-testimonio">[Cargo y empresa]</p>
                         </div>
-                    </div>
-                </article>
+                        <h3>Desarrollo Web</h3>
+                        <p>
+                            Creación de páginas web profesionales para negocios y
+                            profesionales independientes, como esta misma.
+                        </p>
+                        <ul class="lista-incluye" aria-label="Qué incluye">
+                            <li>Páginas web para negocios y profesionales</li>
+                            <li>Diseño adaptado a celular, tablet y computador</li>
+                            <li>Formulario de contacto y botón de WhatsApp</li>
+                        </ul>
+                        <a class="enlace-servicio" href="https://wa.me/573142389938?text=Hola%20Miguel%2C%20me%20interesa%20una%20p%C3%A1gina%20web%20para%20mi%20negocio."
+                            target="_blank" rel="noopener">
+                            Consultar por WhatsApp <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                        </a>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CÓMO TRABAJO ===== -->
+        <section id="proceso" class="seccion seccion--alterna">
+            <div class="contenedor seccion-oculta">
+                <h2 class="titulo-seccion">Cómo trabajo</h2>
+                <p class="intro-seccion">
+                    Un proceso claro, para que sepas qué esperar desde el primer mensaje.
+                </p>
+
+                <!-- <ol>: lista ordenada, porque los pasos tienen secuencia -->
+                <ol class="pasos">
+                    <li class="paso">
+                        <span class="numero-paso" aria-hidden="true">1</span>
+                        <h3>Diagnóstico</h3>
+                        <p>Conversamos sobre tu necesidad y reviso cómo funciona hoy tu proceso.</p>
+                    </li>
+                    <li class="paso">
+                        <span class="numero-paso" aria-hidden="true">2</span>
+                        <h3>Propuesta</h3>
+                        <p>Te envío alcance, cronograma y cotización antes de empezar, sin compromiso.</p>
+                    </li>
+                    <li class="paso">
+                        <span class="numero-paso" aria-hidden="true">3</span>
+                        <h3>Desarrollo</h3>
+                        <p>Construyo la solución y la ajustamos juntos para que encaje con tu forma de trabajar.</p>
+                    </li>
+                    <li class="paso">
+                        <span class="numero-paso" aria-hidden="true">4</span>
+                        <h3>Entrega y soporte</h3>
+                        <p>Te entrego la solución funcionando, con un periodo de ajustes menores sin costo adicional.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ===== PROYECTOS =====
+             PENDIENTE: reemplazar estos proyectos por casos reales confirmados -->
+        <section id="proyectos" class="seccion">
+            <div class="contenedor seccion-oculta">
+                <h2 class="titulo-seccion">Proyectos</h2>
+                <div class="grid-proyectos">
+
+                    <article class="tarjeta-proyecto">
+                        <h3>Automatización de Reportes Financieros</h3>
+                        <p>
+                            Desarrollo de una herramienta en Excel/VBA para generar
+                            reportes financieros mensuales automáticamente, reduciendo
+                            el tiempo de elaboración de 3 días a 2 horas.
+                        </p>
+                        <div class="etiquetas-proyecto">
+                            <span class="etiqueta">Excel</span>
+                            <span class="etiqueta">VBA</span>
+                            <span class="etiqueta">Automatización</span>
+                        </div>
+                    </article>
+
+                    <article class="tarjeta-proyecto">
+                        <h3>Sistema de Control de Inventario</h3>
+                        <p>
+                            Aplicación web para gestión de inventario de una pequeña
+                            empresa, con registro de entradas, salidas y alertas de
+                            stock mínimo.
+                        </p>
+                        <div class="etiquetas-proyecto">
+                            <span class="etiqueta">JavaScript</span>
+                            <span class="etiqueta">HTML/CSS</span>
+                            <span class="etiqueta">Base de datos</span>
+                        </div>
+                    </article>
+
+                    <article class="tarjeta-proyecto">
+                        <h3>Página Web Profesional</h3>
+                        <p>
+                            Este mismo sitio: diseñado y desarrollado desde cero como
+                            parte de mi transición hacia el desarrollo de software.
+                        </p>
+                        <div class="etiquetas-proyecto">
+                            <span class="etiqueta">HTML</span>
+                            <span class="etiqueta">CSS</span>
+                            <span class="etiqueta">JavaScript</span>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TESTIMONIOS: desactivado hasta tener testimonios reales =====
+             Para reactivarlo: quita los marcadores de comentario y agrega
+             <li><a href="#testimonios">Testimonios</a></li> al menú.
+             Los estilos se conservan en style.css.
+
+        <section id="testimonios" class="seccion seccion--alterna">
+            <div class="contenedor seccion-oculta">
+                <h2 class="titulo-seccion">Lo que dicen mis clientes</h2>
+                <div class="grid-testimonios">
+                    <article class="tarjeta-testimonio">
+                        <p class="cita-testimonio">"[Texto real del cliente]"</p>
+                        <div class="autor-testimonio">
+                            <div class="avatar-testimonio">XX</div>
+                            <div>
+                                <p class="nombre-testimonio">[Nombre del cliente]</p>
+                                <p class="cargo-testimonio">[Cargo y empresa]</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             </div>
         </section>
         -->
 
-        <section id="preguntas-frecuentes" class="seccion-oculta">
-            <h2>Preguntas frecuentes</h2>
-            <div class="lista-faq">
+        <!-- ===== PREGUNTAS FRECUENTES ===== -->
+        <section id="preguntas-frecuentes" class="seccion seccion--alterna">
+            <div class="contenedor contenedor--angosto seccion-oculta">
+                <h2 class="titulo-seccion">Preguntas frecuentes</h2>
+                <div class="lista-faq">
 
-                <details class="item-faq">
-                    <summary>¿Cuánto cobras por tus servicios?</summary>
-                    <p>
-                        Depende del alcance del proyecto. Para asesorías puntuales manejo
-                        una tarifa fija; para automatización o desarrollo web, cotizo
-                        según la complejidad después de conocer tu necesidad específica.
-                        Escríbeme y con gusto te doy un estimado sin compromiso.
-                    </p>
-                </details>
+                    <details class="item-faq">
+                        <summary>¿Cuánto cobras por tus servicios?</summary>
+                        <p>
+                            Depende del alcance del proyecto. Para asesorías puntuales manejo
+                            una tarifa fija; para automatización o desarrollo web, cotizo
+                            según la complejidad después de conocer tu necesidad específica.
+                            Escríbeme y con gusto te doy un estimado sin compromiso.
+                        </p>
+                    </details>
 
-                <details class="item-faq">
-                    <summary>¿Trabajas con clientes fuera de mi ciudad?</summary>
-                    <p>
-                        Sí, trabajo de forma remota con clientes en toda Colombia.
-                        La mayoría de reuniones y entregas se coordinan por videollamada
-                        y WhatsApp sin ningún problema.
-                    </p>
-                </details>
+                    <details class="item-faq">
+                        <summary>¿Trabajas con clientes fuera de mi ciudad?</summary>
+                        <p>
+                            Sí, trabajo de forma remota con clientes en toda Colombia.
+                            La mayoría de reuniones y entregas se coordinan por videollamada
+                            y WhatsApp sin ningún problema.
+                        </p>
+                    </details>
 
-                <details class="item-faq">
-                    <summary>¿Cuánto tiempo toma un proyecto de automatización?</summary>
-                    <p>
-                        Proyectos pequeños (como automatizar un reporte en Excel) pueden
-                        estar listos en pocos días. Proyectos más grandes, como un
-                        sistema web a la medida, dependen del alcance — te doy un
-                        cronograma claro antes de empezar.
-                    </p>
-                </details>
+                    <details class="item-faq">
+                        <summary>¿Cuánto tiempo toma un proyecto de automatización?</summary>
+                        <p>
+                            Proyectos pequeños (como automatizar un reporte en Excel) pueden
+                            estar listos en pocos días. Proyectos más grandes, como un
+                            sistema web a la medida, dependen del alcance — te doy un
+                            cronograma claro antes de empezar.
+                        </p>
+                    </details>
 
-                <details class="item-faq">
-                    <summary>¿Ofreces algún tipo de garantía o soporte posterior?</summary>
-                    <p>
-                        Sí, incluyo un periodo de ajustes menores después de la entrega
-                        sin costo adicional, para asegurarnos de que todo funcione como
-                        esperas.
-                    </p>
-                </details>
+                    <details class="item-faq">
+                        <summary>¿Ofreces algún tipo de garantía o soporte posterior?</summary>
+                        <p>
+                            Sí, incluyo un periodo de ajustes menores después de la entrega
+                            sin costo adicional, para asegurarnos de que todo funcione como
+                            esperas.
+                        </p>
+                    </details>
 
+                </div>
             </div>
         </section>
 
-        <section id="contacto" class="seccion-oculta">
-            <h2>Contacto</h2>
-            <p>¿Tienes un proyecto en mente? Escríbeme y hablemos.</p>
+        <!-- ===== CONTACTO ===== -->
+        <section id="contacto" class="seccion">
+            <div class="contenedor contenedor--angosto seccion-oculta">
+                <h2 class="titulo-seccion">Contacto</h2>
+                <p class="intro-seccion">¿Tienes un proyecto en mente? Escríbeme y hablemos.</p>
 
-            <!-- novalidate: desactiva las burbujas nativas del navegador para que
-                 JavaScript muestre los errores debajo de cada campo. Si JS no
-                 carga, el formulario igual se envía a Formspree. -->
-            <form class="formulario-contacto" id="formContacto" action="https://formspree.io/f/mljdzayr"
-                method="POST" novalidate>
-                <div class="campo">
-                    <label for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" autocomplete="name" required minlength="2"
-                        aria-describedby="error-nombre">
-                    <p class="error-campo" id="error-nombre"></p>
-                </div>
+                <!-- novalidate: desactiva las burbujas nativas del navegador para que
+                     JavaScript muestre los errores debajo de cada campo. Si JS no
+                     carga, el formulario igual se envía a Formspree. -->
+                <form class="formulario-contacto" id="formContacto" action="https://formspree.io/f/mljdzayr"
+                    method="POST" novalidate>
+                    <div class="campo">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" autocomplete="name" required minlength="2"
+                            aria-describedby="error-nombre">
+                        <p class="error-campo" id="error-nombre"></p>
+                    </div>
 
-                <div class="campo">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" autocomplete="email" required
-                        aria-describedby="error-email">
-                    <p class="error-campo" id="error-email"></p>
-                </div>
+                    <div class="campo">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" autocomplete="email" required
+                            aria-describedby="error-email">
+                        <p class="error-campo" id="error-email"></p>
+                    </div>
 
-                <div class="campo">
-                    <label for="mensaje">Mensaje</label>
-                    <textarea id="mensaje" name="mensaje" rows="5" required minlength="10"
-                        aria-describedby="error-mensaje"></textarea>
-                    <p class="error-campo" id="error-mensaje"></p>
-                </div>
+                    <div class="campo">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="5" required minlength="10"
+                            aria-describedby="error-mensaje"></textarea>
+                        <p class="error-campo" id="error-mensaje"></p>
+                    </div>
 
-                <!-- Antispam (honeypot): campo invisible para personas. Los bots
-                     lo llenan y Formspree descarta esos envíos. -->
-                <div class="campo-trampa" aria-hidden="true">
-                    <label for="_gotcha">No llenes este campo</label>
-                    <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
-                </div>
+                    <!-- Antispam (honeypot): campo invisible para personas. Los bots
+                         lo llenan y Formspree descarta esos envíos. -->
+                    <div class="campo-trampa" aria-hidden="true">
+                        <label for="_gotcha">No llenes este campo</label>
+                        <input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+                    </div>
 
-                <button type="submit">Enviar mensaje</button>
+                    <button type="submit">Enviar mensaje</button>
 
-                <!-- role="status" + aria-live: los lectores de pantalla anuncian
-                     el resultado del envío sin mover el foco. -->
-                <p class="estado-formulario" id="estadoFormulario" role="status" aria-live="polite"></p>
-            </form>
+                    <!-- role="status" + aria-live: los lectores de pantalla anuncian
+                         el resultado del envío sin mover el foco. -->
+                    <p class="estado-formulario" id="estadoFormulario" role="status" aria-live="polite"></p>
+                </form>
 
-            <div class="datos-contacto-directo">
-                <p>También puedes escribirme directamente:</p>
-                <ul>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <div class="datos-contacto-directo">
+                    <p>También puedes escribirme directamente:</p>
+                    <ul>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M22 6l-10 7L2 6" />
                             <path d="M2 6h20v12H2z" />
                         </svg>
-                        <a href="mailto:miguelaldana.digital@gmail.com">miguelaldana.digital@gmail.com</a>
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <a href="mailto:miguelaldana.digital@gmail.com">miguelaldana.digital@gmail.com</a>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path
                                 d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
                         </svg>
-                        <a href="https://wa.me/573142389938" target="_blank" rel="noopener">Escríbeme por WhatsApp</a>
-                    </li>
-                    <li>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <a href="https://wa.me/573142389938" target="_blank" rel="noopener">Escríbeme por WhatsApp</a>
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                             <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z" />
                             <rect x="2" y="9" width="4" height="12" />
                             <circle cx="4" cy="4" r="2" />
                         </svg>
-                        <a href="https://www.linkedin.com/in/miguel-angel-aldana-gaitan-1a34941b9" target="_blank" rel="noopener">Ver perfil de LinkedIn</a>
-                    </li>
-                </ul>
+                            <a href="https://www.linkedin.com/in/miguel-angel-aldana-gaitan-1a34941b9" target="_blank" rel="noopener">Ver perfil de LinkedIn</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Miguel Aldana. Todos los derechos reservados.</p>
+    <!-- ===== PIE DE PÁGINA ===== -->
+    <footer class="pie">
+        <div class="contenedor pie-grid">
+            <div class="pie-marca">
+                <a href="#inicio" class="pie-logo">Miguel Aldana</a>
+                <p>Contador Público · Tecnología y Automatización</p>
+            </div>
+
+            <nav class="pie-columna" aria-label="Navegación del pie de página">
+                <h2 class="pie-titulo">Navegación</h2>
+                <ul>
+                    <li><a href="#sobre-mi">Sobre mí</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#proceso">Cómo trabajo</a></li>
+                    <li><a href="#proyectos">Proyectos</a></li>
+                    <li><a href="#preguntas-frecuentes">Preguntas frecuentes</a></li>
+                </ul>
+            </nav>
+
+            <div class="pie-columna">
+                <h2 class="pie-titulo">Contacto</h2>
+                <ul>
+                    <li><a href="mailto:miguelaldana.digital@gmail.com">miguelaldana.digital@gmail.com</a></li>
+                    <li><a href="https://wa.me/573142389938" target="_blank" rel="noopener">WhatsApp</a></li>
+                    <li><a href="https://www.linkedin.com/in/miguel-angel-aldana-gaitan-1a34941b9" target="_blank" rel="noopener">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="pie-inferior">
+            <p>&copy; 2026 Miguel Aldana. Todos los derechos reservados.</p>
+        </div>
     </footer>
 
     <a href="https://wa.me/573142389938?text=Hola%20Miguel%2C%20vi%20tu%20p%C3%A1gina%20y%20me%20interesa%20hablar%20sobre%20un%20proyecto"

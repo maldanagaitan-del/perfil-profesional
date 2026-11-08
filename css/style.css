@@ -1,12 +1,37 @@
-/* ===== RESET BÁSICO ===== */
+/* =====================================================================
+   style.css — Perfil profesional de Miguel Aldana
+   ---------------------------------------------------------------------
+   ÍNDICE
+    1. Reset y variables (tokens de diseño)
+    2. Base y tipografía
+    3. Accesibilidad (foco, saltar contenido)
+    4. Componentes reutilizables (sección, contenedor, títulos, botones)
+    5. Header y navegación
+    6. Hero (inicio)
+    7. Sobre mí
+    8. Servicios
+    9. Cómo trabajo
+   10. Proyectos
+   11. Testimonios (desactivado en el HTML)
+   12. Preguntas frecuentes
+   13. Contacto y formulario
+   14. Pie de página
+   15. WhatsApp flotante
+   16. Animación de aparición
+   17. Responsive: menú (≤1024px) y diseño (≤768px)
+   18. Movimiento reducido
+   ===================================================================== */
+
+
+/* ===== 1. RESET Y VARIABLES ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ===== VARIABLES DE DISEÑO ===== */
 :root {
+    /* Colores */
     --color-primario: #1a3a5c;
     --color-encabezado: #1a3a5c;
     --color-secundario: #2e8b8b;
@@ -15,13 +40,19 @@
     --color-superficie: #ffffff;
     --color-borde: #e0e0e0;
     --color-texto: #333333;
-    --color-texto-claro: #666666;
+    --color-texto-claro: #5c5c5c;
     --color-blanco: #ffffff;
     --color-error: #b42318;
     --color-exito: #15803d;
     --color-foco: #1f6363;
+    --color-glow: rgba(46, 139, 139, 0.15);
+    --color-pie: #1a3a5c;
 
-    /* ===== ESCALA DE ESPACIADO ===== */
+    /* Fondo de las tarjetas. Cambia según la franja donde estén
+       (ver .seccion--alterna) para que siempre contrasten. */
+    --color-tarjeta: var(--color-superficie);
+
+    /* Espaciado */
     --space-2xs: 0.25rem;
     --space-xs: 0.5rem;
     --space-sm: 0.75rem;
@@ -31,32 +62,32 @@
     --space-2xl: 3rem;
     --space-3xl: 5rem;
 
-    /* ===== RADIOS DE BORDE ===== */
+    /* Radios */
     --radio-sm: 6px;
     --radio-md: 10px;
+    --radio-lg: 16px;
     --radio-full: 50%;
 
-    /* ===== SOMBRAS ===== */
+    /* Sombras */
     --sombra-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
     --sombra-md: 0 2px 10px rgba(0, 0, 0, 0.06);
     --sombra-lg: 0 6px 20px rgba(0, 0, 0, 0.1);
     --sombra-boton: 0 10px 25px -5px rgba(26, 58, 92, 0.4);
     --sombra-boton-hover: 0 15px 30px -5px rgba(26, 58, 92, 0.5);
-    --color-glow: rgba(46, 139, 139, 0.15);
     --header-glass: rgba(255, 255, 255, 0.7);
 
+    /* Tipografía */
     --fuente-principal: 'Inter', 'Segoe UI', Arial, sans-serif;
     --fuente-titulos: 'Poppins', 'Segoe UI', Arial, sans-serif;
 
+    /* Layout */
     --espaciado-seccion: var(--space-3xl) var(--space-xl);
     --ancho-maximo: 1100px;
+    --ancho-angosto: 760px;
 }
 
-/* ===== MODO OSCURO (corregido: ya no anidado dentro de :root) =====
-   Nota: --color-blanco NO se redefine aquí a propósito — se mantiene
-   blanco siempre, porque se usa como color de TEXTO sobre fondos de
-   color (botones, footer, avatar), no como fondo. El fondo de tarjetas
-   usa --color-superficie, que sí cambia. */
+/* Modo oscuro: solo se redefinen las variables que cambian.
+   --color-blanco NO cambia a propósito: es el texto sobre fondos de color. */
 [data-tema="oscuro"] {
     --color-fondo: #0f172a;
     --color-superficie: #1e293b;
@@ -65,13 +96,20 @@
     --color-texto-claro: #94a3b8;
     --color-encabezado: #7db8e8;
     --color-secundario-texto: #5eead4;
-    --sombra-boton: 0 10px 25px -5px rgba(94, 234, 212, 0.25);
-    --sombra-boton-hover: 0 15px 35px -5px rgba(94, 234, 212, 0.35);
-    --color-glow: rgba(94, 234, 212, 0.12);
-    --header-glass: rgba(15, 23, 42, 0.7);
     --color-error: #fca5a5;
     --color-exito: #86efac;
     --color-foco: #5eead4;
+    --color-glow: rgba(94, 234, 212, 0.12);
+    --color-pie: #0b1220;
+    --sombra-boton: 0 10px 25px -5px rgba(94, 234, 212, 0.25);
+    --sombra-boton-hover: 0 15px 35px -5px rgba(94, 234, 212, 0.35);
+    --header-glass: rgba(15, 23, 42, 0.7);
+}
+
+
+/* ===== 2. BASE Y TIPOGRAFÍA ===== */
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -88,10 +126,20 @@ h3,
     font-family: var(--fuente-titulos);
 }
 
-/* ===== ACCESIBILIDAD: FOCO VISIBLE =====
-   :focus-visible solo se activa al navegar con teclado (no al hacer
-   clic con el mouse), así el anillo no molesta visualmente pero quien
-   usa Tab siempre sabe dónde está. */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Al saltar a una sección desde el menú, deja espacio para el header fijo */
+section[id] {
+    scroll-margin-top: 70px;
+}
+
+
+/* ===== 3. ACCESIBILIDAD ===== */
+
+/* :focus-visible solo se activa al navegar con teclado */
 :focus-visible {
     outline: 3px solid var(--color-foco);
     outline-offset: 3px;
@@ -103,7 +151,6 @@ main:focus {
     outline: none;
 }
 
-/* ===== ACCESIBILIDAD: SALTAR AL CONTENIDO ===== */
 .saltar-contenido {
     position: absolute;
     top: -100px;
@@ -122,7 +169,109 @@ main:focus {
     top: var(--space-md);
 }
 
-/* ===== HEADER Y NAVEGACIÓN ===== */
+
+/* ===== 4. COMPONENTES REUTILIZABLES =====
+   Antes, cada sección repetía max-width, margin, padding y el estilo
+   de su h2 (7 veces). Ahora todas usan estas mismas clases. */
+
+/* Franja a todo el ancho */
+.seccion {
+    padding: var(--espaciado-seccion);
+}
+
+/* Franja con fondo alterno: separa visualmente las secciones */
+.seccion--alterna {
+    background-color: var(--color-superficie);
+    border-top: 1px solid var(--color-borde);
+    border-bottom: 1px solid var(--color-borde);
+    --color-tarjeta: var(--color-fondo);
+}
+
+/* Contenido centrado con ancho máximo */
+.contenedor {
+    max-width: var(--ancho-maximo);
+    margin: 0 auto;
+}
+
+.contenedor--angosto {
+    max-width: var(--ancho-angosto);
+}
+
+.titulo-seccion {
+    font-size: 2.2rem;
+    color: var(--color-encabezado);
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+/* Si debajo del título viene una introducción, se pegan más.
+   :has() = "el título que TIENE justo después una .intro-seccion" */
+.titulo-seccion:has(+ .intro-seccion) {
+    margin-bottom: var(--space-sm);
+}
+
+.intro-seccion {
+    text-align: center;
+    color: var(--color-texto-claro);
+    max-width: 600px;
+    margin: 0 auto var(--space-2xl);
+}
+
+/* Botón principal (degradado + brillo al pasar el mouse) */
+.btn-principal {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    color: var(--color-blanco);
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border-radius: var(--radio-sm);
+    font-weight: 600;
+    box-shadow: var(--sombra-boton);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.btn-principal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-principal:hover::before {
+    left: 100%;
+}
+
+.btn-principal:hover {
+    box-shadow: var(--sombra-boton-hover);
+    transform: translateY(-3px);
+}
+
+/* Botón secundario: misma forma, menos peso visual */
+.btn-secundario {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    border-radius: var(--radio-sm);
+    border: 1px solid var(--color-borde);
+    background-color: var(--color-superficie);
+    color: var(--color-encabezado);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-secundario:hover {
+    border-color: var(--color-secundario-texto);
+    background-color: var(--color-glow);
+}
+
+
+/* ===== 5. HEADER Y NAVEGACIÓN ===== */
 header {
     background-color: var(--header-glass);
     backdrop-filter: blur(12px);
@@ -131,7 +280,6 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: none;
     transition: box-shadow 0.3s ease;
 }
 
@@ -139,7 +287,9 @@ header.con-scroll {
     box-shadow: var(--sombra-sm);
 }
 
-nav {
+/* "header nav" y no solo "nav": hay otro <nav> en el pie de página
+   que no debe recibir estos estilos */
+header nav {
     max-width: var(--ancho-maximo);
     margin: 0 auto;
     display: flex;
@@ -156,13 +306,78 @@ nav {
     white-space: nowrap;
 }
 
-/* Agrupa enlaces + botón de tema + hamburguesa en el lado derecho.
-   Antes, justify-content: space-between repartía 3 elementos y el
-   botón de tema quedaba flotando en el centro de la barra. */
+/* Enlaces + botón de tema + hamburguesa, juntos a la derecha */
 .nav-acciones {
     display: flex;
     align-items: center;
     gap: var(--space-lg);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 1.6rem;
+}
+
+.nav-links a {
+    position: relative;
+    text-decoration: none;
+    color: var(--color-texto);
+    font-weight: 500;
+    padding-bottom: 4px;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+/* Subrayado animado del enlace activo / hover */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-secundario-texto);
+    transition: width 0.25s ease;
+}
+
+.nav-links a:hover {
+    color: var(--color-secundario-texto);
+}
+
+.nav-links a:hover::after,
+.nav-links a.activo::after {
+    width: 100%;
+}
+
+.nav-links a.activo {
+    color: var(--color-secundario-texto);
+    font-weight: 600;
+}
+
+/* "Contacto" se ve como botón: es la acción principal del menú */
+.nav-links a.nav-cta {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    padding: 0.45rem 1rem;
+    border-radius: var(--radio-sm);
+    transition: background-color 0.2s ease;
+}
+
+.nav-links a.nav-cta::after {
+    display: none;
+}
+
+.nav-links a.nav-cta:hover,
+.nav-links a.nav-cta.activo {
+    background-color: var(--color-secundario-texto);
+    color: var(--color-blanco);
+}
+
+[data-tema="oscuro"] .nav-links a.nav-cta:hover,
+[data-tema="oscuro"] .nav-links a.nav-cta.activo {
+    color: var(--color-fondo);
 }
 
 .btn-tema {
@@ -199,74 +414,36 @@ nav {
     display: none;
 }
 
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
 
-.nav-links a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-texto);
-    font-weight: 500;
-    padding-bottom: 4px;
-    transition: color 0.2s ease;
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--color-secundario-texto);
-    transition: width 0.25s ease;
-}
-
-.nav-links a:hover {
-    color: var(--color-secundario-texto);
-}
-
-.nav-links a:hover::after,
-.nav-links a.activo::after {
-    width: 100%;
-}
-
-.nav-links a.activo {
-    color: var(--color-secundario-texto);
-    font-weight: 600;
-}
-
-/* ===== SECCIÓN INICIO (HERO) ===== */
-#inicio {
+/* ===== 6. HERO (INICIO) ===== */
+.hero {
     position: relative;
     overflow: hidden;
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-    text-align: center;
+    padding: var(--space-3xl) var(--space-xl);
+    /* Patrón de puntos de fondo */
     background-image: radial-gradient(circle at 1px 1px, var(--color-borde) 1px, transparent 0);
     background-size: 24px 24px;
 }
 
-#inicio::before {
+/* Resplandor detrás de la foto */
+.hero::before {
     content: '';
     position: absolute;
     top: 50%;
-    left: 50%;
+    right: 10%;
     width: 600px;
     height: 600px;
     background: radial-gradient(circle, var(--color-glow), transparent 70%);
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     pointer-events: none;
-    z-index: 0;
 }
 
-#inicio > * {
+.hero-grid {
     position: relative;
-    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    align-items: center;
+    gap: var(--space-3xl);
 }
 
 .badge-disponible {
@@ -305,19 +482,31 @@ nav {
     }
 }
 
-#inicio h1 {
-    font-size: 3.75rem;
-    letter-spacing: -0.02em;
-    color: var(--color-encabezado);
-    margin-bottom: 0.5rem;
+.hero-nombre {
+    font-weight: 600;
+    color: var(--color-secundario-texto);
+    letter-spacing: 0.02em;
+    margin-bottom: var(--space-sm);
 }
 
-/* Mejora progresiva: solo navegadores que soportan recortar el
-   fondo con la forma del texto reciben el efecto de degradado.
-   El resto se queda con el color solido de arriba, que sigue
-   viendose perfectamente bien. */
+/* clamp(mínimo, ideal, máximo): el título se adapta solo al ancho
+   de la pantalla, sin necesidad de un media query */
+.hero h1 {
+    font-size: clamp(1.9rem, 3.6vw, 2.75rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-encabezado);
+    margin-bottom: var(--space-lg);
+}
+
+/* Mejora progresiva: el degradado solo se aplica donde el navegador
+   lo soporta; el resto ve el color sólido. */
+.resaltado {
+    color: var(--color-secundario-texto);
+}
+
 @supports (background-clip: text) or (-webkit-background-clip: text) {
-    #inicio h1 {
+    .resaltado {
         background: linear-gradient(135deg, var(--color-encabezado), var(--color-secundario-texto));
         -webkit-background-clip: text;
         background-clip: text;
@@ -325,85 +514,57 @@ nav {
     }
 }
 
-.subtitulo {
-    font-size: 1.3rem;
-    color: var(--color-secundario-texto);
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-}
-
 .descripcion {
     font-size: 1.1rem;
     color: var(--color-texto-claro);
-    max-width: 650px;
-    margin: 0 auto 2rem auto;
+    max-width: 560px;
+    margin-bottom: var(--space-xl);
 }
 
-.btn-principal {
-    display: inline-block;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
-    color: var(--color-blanco);
-    text-decoration: none;
-    padding: 0.9rem 2rem;
-    border-radius: var(--radio-sm);
-    font-weight: 600;
-    box-shadow: var(--sombra-boton);
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
-}
-
-.btn-principal::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.5s ease;
-}
-
-.btn-principal:hover::before {
-    left: 100%;
-}
-
-.btn-principal:hover {
-    box-shadow: var(--sombra-boton-hover);
-    transform: translateY(-3px);
-}
-
-/* ===== SECCIÓN SOBRE MÍ ===== */
-#sobre-mi {
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-}
-
-#sobre-mi h2 {
-    font-size: 2.2rem;
-    color: var(--color-encabezado);
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.contenido-sobre-mi {
+.hero-acciones {
     display: flex;
-    align-items: center;
-    gap: 3rem;
+    flex-wrap: wrap;
+    gap: var(--space-md);
 }
 
-.contenido-sobre-mi img {
-    width: 280px;
-    height: 280px;
+.hero-foto {
+    position: relative;
+    justify-self: center;
+    max-width: 340px;
+}
+
+.hero-foto img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
     object-fit: cover;
-    border-radius: var(--radio-full);
-    flex-shrink: 0;
+    border-radius: var(--radio-lg);
+    border: 6px solid var(--color-superficie);
+    box-shadow: var(--sombra-lg);
 }
 
+/* Etiqueta flotante sobre la foto con la credencial principal */
+.hero-credencial {
+    position: absolute;
+    left: 50%;
+    bottom: -1rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background-color: var(--color-superficie);
+    color: var(--color-encabezado);
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--sombra-sm);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+
+/* ===== 7. SOBRE MÍ ===== */
 .texto-sobre-mi p {
-    margin-bottom: 1rem;
-    color: var(--color-texto);
+    margin-bottom: var(--space-md);
+    font-size: 1.05rem;
 }
 
 .grid-contadores {
@@ -416,8 +577,7 @@ nav {
     text-align: center;
 }
 
-/* --color-encabezado (no --color-primario) porque sí se adapta al
-   modo oscuro: antes el contraste en oscuro era 1,53:1, ilegible. */
+/* --color-encabezado (no --color-primario): se adapta al modo oscuro */
 .valor-destacado {
     display: block;
     font-family: var(--fuente-titulos);
@@ -432,75 +592,57 @@ nav {
     color: var(--color-texto-claro);
 }
 
-/* ===== SECCIÓN SERVICIOS ===== */
-#servicios {
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-}
 
-#servicios h2 {
-    font-size: 2.2rem;
-    color: var(--color-encabezado);
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
+/* ===== 8. SERVICIOS (bento grid) ===== */
 .grid-servicios {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 2rem;
+    gap: var(--space-xl);
 }
 
 .tarjeta-servicio {
-    background-color: var(--color-superficie);
-    padding: 2rem;
-    border-radius: var(--radio-md);
-    box-shadow: var(--sombra-md);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-}
-
-/* Bento: la 2a tarjeta (tu diferenciador, Automatización) ocupa
-   toda la columna derecha, abarcando las 2 filas */
-.tarjeta-servicio:nth-child(1) {
-    grid-column: 1;
-    grid-row: 1;
-}
-
-.tarjeta-servicio:nth-child(2) {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    background: linear-gradient(160deg, var(--color-superficie), var(--color-glow));
-}
-
-.tarjeta-servicio:nth-child(2) .icono-servicio {
-    width: 60px;
-    height: 60px;
-}
-
-.tarjeta-servicio:nth-child(2) .icono-servicio svg {
-    width: 30px;
-    height: 30px;
-}
-
-.tarjeta-servicio:nth-child(3) {
-    grid-column: 1;
-    grid-row: 2;
+    background-color: var(--color-tarjeta);
+    padding: var(--space-xl);
+    border-radius: var(--radio-md);
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--sombra-md);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tarjeta-servicio:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     box-shadow: var(--sombra-lg);
+}
+
+/* La tarjeta destacada ocupa toda la columna derecha (2 filas) */
+.tarjeta-servicio--destacada {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-content: center;
+    background: linear-gradient(160deg, var(--color-tarjeta), var(--color-glow));
+    border-color: var(--color-secundario);
+}
+
+.etiqueta-destacada {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-secundario-texto);
+    background-color: var(--color-glow);
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    margin-bottom: var(--space-md);
 }
 
 .icono-servicio {
     width: 48px;
     height: 48px;
-    background-color: rgba(46, 139, 139, 0.1);
+    background-color: var(--color-glow);
     border-radius: var(--radio-sm);
     display: flex;
     align-items: center;
@@ -515,48 +657,131 @@ nav {
 }
 
 .tarjeta-servicio h3 {
-    color: var(--color-secundario);
-    margin-bottom: 0.8rem;
+    color: var(--color-encabezado);
+    margin-bottom: var(--space-sm);
     font-size: 1.2rem;
 }
 
-.tarjeta-servicio p {
+.tarjeta-servicio > p {
     color: var(--color-texto-claro);
 }
 
-/* ===== SECCIÓN PROYECTOS ===== */
-#proyectos {
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-    background-color: var(--color-superficie);
+/* Lista "Qué incluye" con marca de verificación dibujada en CSS */
+.lista-incluye {
+    list-style: none;
+    margin: var(--space-md) 0 var(--space-lg);
+    display: grid;
+    gap: var(--space-xs);
 }
 
-#proyectos h2 {
-    font-size: 2.2rem;
+.lista-incluye li {
+    position: relative;
+    padding-left: 1.6rem;
+    font-size: 0.95rem;
+}
+
+.lista-incluye li::before {
+    content: '';
+    position: absolute;
+    left: 0.2rem;
+    top: 0.35em;
+    width: 0.45rem;
+    height: 0.8rem;
+    border: solid var(--color-secundario-texto);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* margin-top: auto empuja el enlace al fondo de la tarjeta, así los
+   botones quedan alineados aunque los textos tengan largos distintos */
+.enlace-servicio {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    align-self: flex-start;
+    font-weight: 600;
+    color: var(--color-secundario-texto);
+    text-decoration: none;
+}
+
+.enlace-servicio svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+}
+
+.enlace-servicio:hover {
+    text-decoration: underline;
+}
+
+.enlace-servicio:hover svg {
+    transform: translateX(3px);
+}
+
+
+/* ===== 9. CÓMO TRABAJO ===== */
+.pasos {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+}
+
+.paso {
+    background-color: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-md);
+    padding: var(--space-lg);
+}
+
+.numero-paso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radio-full);
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    color: var(--color-blanco);
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+}
+
+.paso h3 {
     color: var(--color-encabezado);
-    margin-bottom: 2.5rem;
-    text-align: center;
+    font-size: 1.05rem;
+    margin-bottom: var(--space-xs);
 }
 
+.paso p {
+    color: var(--color-texto-claro);
+    font-size: 0.95rem;
+}
+
+
+/* ===== 10. PROYECTOS ===== */
 .grid-proyectos {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: var(--space-xl);
     counter-reset: contador-proyectos;
 }
 
 .tarjeta-proyecto {
     position: relative;
     overflow: hidden;
-    background-color: var(--color-fondo);
-    padding: 2rem;
+    background-color: var(--color-tarjeta);
+    padding: var(--space-xl);
     border-radius: var(--radio-md);
+    border: 1px solid var(--color-borde);
     border-left: 4px solid var(--color-secundario);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     counter-increment: contador-proyectos;
 }
 
+/* Número grande decorativo (01, 02, 03) generado con CSS */
 .tarjeta-proyecto::before {
     content: counter(contador-proyectos, decimal-leading-zero);
     position: absolute;
@@ -566,24 +791,22 @@ nav {
     font-size: 4.5rem;
     font-weight: 700;
     color: var(--color-borde);
-    z-index: 0;
     line-height: 1;
 }
 
 .tarjeta-proyecto > * {
     position: relative;
-    z-index: 1;
 }
 
 .tarjeta-proyecto:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     box-shadow: var(--sombra-md);
 }
 
 .tarjeta-proyecto h3 {
     color: var(--color-encabezado);
-    margin-bottom: 0.8rem;
-    font-size: 1.2rem;
+    margin-bottom: var(--space-sm);
+    font-size: 1.15rem;
     padding-right: 2rem;
 }
 
@@ -607,22 +830,10 @@ nav {
     border-radius: 100px;
 }
 
-/* ===== SECCIÓN TESTIMONIOS =====
-   La sección está desactivada en index.html hasta tener testimonios
-   reales; estos estilos se conservan para reactivarla sin rehacerlos. */
-#testimonios {
-    max-width: var(--ancho-maximo);
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-}
 
-#testimonios h2 {
-    font-size: 2.2rem;
-    color: var(--color-encabezado);
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
+/* ===== 11. TESTIMONIOS =====
+   Desactivado en index.html hasta tener testimonios reales; los
+   estilos se conservan para reactivarlo sin rehacerlos. */
 .grid-testimonios {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -630,14 +841,13 @@ nav {
 }
 
 .tarjeta-testimonio {
-    background-color: var(--color-superficie);
+    background-color: var(--color-tarjeta);
     padding: var(--space-xl);
     border-radius: var(--radio-md);
-    box-shadow: var(--sombra-md);
+    border: 1px solid var(--color-borde);
 }
 
 .cita-testimonio {
-    color: var(--color-texto);
     font-style: italic;
     margin-bottom: var(--space-lg);
     line-height: 1.7;
@@ -665,7 +875,6 @@ nav {
 
 .nombre-testimonio {
     font-weight: 600;
-    color: var(--color-texto);
     font-size: 0.95rem;
 }
 
@@ -674,20 +883,8 @@ nav {
     font-size: 0.85rem;
 }
 
-/* ===== SECCIÓN FAQ ===== */
-#preguntas-frecuentes {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-}
 
-#preguntas-frecuentes h2 {
-    font-size: 2.2rem;
-    color: var(--color-encabezado);
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
-
+/* ===== 12. PREGUNTAS FRECUENTES ===== */
 .lista-faq {
     display: flex;
     flex-direction: column;
@@ -695,10 +892,10 @@ nav {
 }
 
 .item-faq {
-    background-color: var(--color-superficie);
+    background-color: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
     border-radius: var(--radio-md);
     padding: var(--space-lg);
-    box-shadow: var(--sombra-md);
 }
 
 .item-faq summary {
@@ -709,6 +906,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: var(--space-md);
 }
 
 .item-faq summary::-webkit-details-marker {
@@ -721,6 +919,7 @@ nav {
     font-weight: 400;
     color: var(--color-secundario-texto);
     transition: transform 0.2s ease;
+    flex-shrink: 0;
 }
 
 .item-faq[open] summary::after {
@@ -733,31 +932,14 @@ nav {
     line-height: 1.7;
 }
 
-/* ===== SECCIÓN CONTACTO ===== */
-#contacto {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: var(--espaciado-seccion);
-    text-align: center;
-}
 
-#contacto h2 {
-    font-size: 2.2rem;
-    color: var(--color-encabezado);
-    margin-bottom: 0.5rem;
-}
-
-#contacto>p {
-    color: var(--color-texto-claro);
-    margin-bottom: 2rem;
-}
-
+/* ===== 13. CONTACTO Y FORMULARIO ===== */
 .formulario-contacto {
+    position: relative; /* referencia para el honeypot */
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    text-align: left;
-    margin-bottom: 3rem;
+    margin-bottom: var(--space-2xl);
 }
 
 .campo {
@@ -768,7 +950,6 @@ nav {
 
 .formulario-contacto label {
     font-weight: 600;
-    color: var(--color-texto);
 }
 
 .formulario-contacto input,
@@ -798,11 +979,6 @@ nav {
     color: var(--color-error);
     font-size: 0.85rem;
     font-weight: 500;
-    min-height: 1.2em;
-}
-
-.error-campo:empty {
-    min-height: 0;
 }
 
 /* Honeypot: fuera de la pantalla (no display:none, que algunos bots detectan) */
@@ -812,6 +988,27 @@ nav {
     width: 1px;
     height: 1px;
     overflow: hidden;
+}
+
+.formulario-contacto button {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    border: none;
+    padding: 0.9rem;
+    border-radius: var(--radio-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.formulario-contacto button:hover {
+    background-color: var(--color-secundario);
+}
+
+.formulario-contacto button:disabled {
+    opacity: 0.7;
+    cursor: progress;
 }
 
 .estado-formulario {
@@ -838,42 +1035,23 @@ nav {
     font-weight: 700;
 }
 
-.formulario-contacto button {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-    border: none;
-    padding: 0.9rem;
-    border-radius: var(--radio-sm);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.formulario-contacto button:hover {
-    background-color: var(--color-secundario);
-}
-
-.formulario-contacto button:disabled {
-    opacity: 0.7;
-    cursor: progress;
-}
-
-/* Necesario para que el honeypot (position: absolute) no se salga */
-.formulario-contacto {
-    position: relative;
+.datos-contacto-directo {
+    text-align: center;
 }
 
 .datos-contacto-directo ul {
     list-style: none;
-    margin-top: 1rem;
+    margin-top: var(--space-md);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
 }
 
 .datos-contacto-directo li {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
-    margin-bottom: var(--space-sm);
 }
 
 .datos-contacto-directo svg {
@@ -887,13 +1065,81 @@ nav {
     color: var(--color-secundario-texto);
     text-decoration: none;
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
 .datos-contacto-directo a:hover {
     text-decoration: underline;
 }
 
-/* ===== BOTÓN WHATSAPP FLOTANTE ===== */
+
+/* ===== 14. PIE DE PÁGINA ===== */
+.pie {
+    background-color: var(--color-pie);
+    color: rgba(255, 255, 255, 0.8);
+    padding: var(--space-2xl) var(--space-xl) 0;
+}
+
+.pie-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--space-xl);
+    padding-bottom: var(--space-xl);
+}
+
+.pie-logo {
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-blanco);
+    text-decoration: none;
+}
+
+.pie-marca p {
+    margin-top: var(--space-xs);
+    font-size: 0.95rem;
+}
+
+.pie-titulo {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-blanco);
+    margin-bottom: var(--space-sm);
+}
+
+.pie-columna ul {
+    list-style: none;
+    display: grid;
+    gap: var(--space-xs);
+}
+
+.pie a:not(.pie-logo) {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    overflow-wrap: anywhere;
+}
+
+.pie a:not(.pie-logo):hover {
+    color: var(--color-blanco);
+    text-decoration: underline;
+}
+
+.pie :focus-visible {
+    outline-color: var(--color-blanco);
+}
+
+.pie-inferior {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: var(--space-lg) 0;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+
+/* ===== 15. WHATSAPP FLOTANTE ===== */
 .whatsapp-flotante {
     position: fixed;
     bottom: var(--space-xl);
@@ -920,18 +1166,11 @@ nav {
     transform: scale(1.08);
 }
 
-/* ===== FOOTER ===== */
-footer {
-    text-align: center;
-    padding: 2rem;
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-}
 
-/* ===== ANIMACIÓN AL HACER SCROLL ===== */
+/* ===== 16. ANIMACIÓN DE APARICIÓN ===== */
 .seccion-oculta {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(24px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -940,20 +1179,16 @@ footer {
     transform: translateY(0);
 }
 
-/* Si JavaScript no carga, el navegador ignora este selector avanzado
-   y las secciones NO quedan invisibles */
+/* Si JavaScript no carga, las secciones no quedan invisibles */
 .no-js .seccion-oculta {
     opacity: 1;
     transform: none;
 }
 
-/* ===================================== */
-/* ===== RESPONSIVE: MENÚ (TABLET) ===== */
-/* ===================================== */
 
-/* El menú horizontal necesita ~900px. Antes se colapsaba recién en
-   768px, y entre 769 y ~1000px el logo se partía en dos líneas y el
-   botón de tema se aplastaba. Ahora se usa la hamburguesa hasta 1024px. */
+/* ===== 17. RESPONSIVE ===== */
+
+/* --- Menú: hamburguesa hasta 1024px --- */
 @media (max-width: 1024px) {
 
     .nav-acciones {
@@ -1002,6 +1237,7 @@ footer {
         width: 100%;
         background-color: var(--color-superficie);
         flex-direction: column;
+        align-items: flex-start;
         gap: var(--space-md);
         padding: 1.5rem;
         box-shadow: var(--sombra-lg);
@@ -1010,43 +1246,58 @@ footer {
     .nav-links.activo {
         display: flex;
     }
+
+    .pasos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-grid {
+        gap: var(--space-2xl);
+    }
 }
 
-/* ===================================== */
-/* ===== RESPONSIVE: DISEÑO (MÓVIL) ===== */
-/* ===================================== */
-
+/* --- Diseño: una columna hasta 768px --- */
 @media (max-width: 768px) {
 
     :root {
         --espaciado-seccion: 3rem 1.2rem;
     }
 
-    nav {
+    header nav {
         padding: 1rem;
     }
 
-    #inicio h1 {
-        font-size: 2.2rem;
+    .hero {
+        padding: 2.5rem 1.2rem 3.5rem;
     }
 
-    .subtitulo {
-        font-size: 1.1rem;
+    /* Foto arriba y texto centrado */
+    .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .hero-foto {
+        order: -1;
+        max-width: 200px;
+    }
+
+    .hero-credencial {
+        font-size: 0.75rem;
     }
 
     .descripcion {
         font-size: 1rem;
-        padding: 0 1rem;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .contenido-sobre-mi {
-        flex-direction: column;
-        text-align: center;
+    .hero-acciones {
+        justify-content: center;
     }
 
-    .contenido-sobre-mi img {
-        width: 200px;
-        height: 200px;
+    .titulo-seccion {
+        font-size: 1.8rem;
     }
 
     .grid-contadores {
@@ -1058,31 +1309,19 @@ footer {
     }
 
     .grid-servicios,
-    .grid-proyectos {
+    .grid-proyectos,
+    .pasos {
         grid-template-columns: 1fr;
-        grid-template-rows: none;
     }
 
-    .tarjeta-servicio:nth-child(1),
-    .tarjeta-servicio:nth-child(2),
-    .tarjeta-servicio:nth-child(3) {
+    .tarjeta-servicio--destacada {
         grid-column: auto;
         grid-row: auto;
     }
 
-    #contacto {
-        max-width: 100%;
-    }
-
-    /* Todos los títulos de sección se reducen igual (antes Testimonios
-       y FAQ quedaban en 2.2rem) */
-    #sobre-mi h2,
-    #servicios h2,
-    #proyectos h2,
-    #testimonios h2,
-    #preguntas-frecuentes h2,
-    #contacto h2 {
-        font-size: 1.8rem;
+    .pie-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
     }
 
     .whatsapp-flotante {
@@ -1098,14 +1337,16 @@ footer {
     }
 }
 
-/* ===================================== */
-/* ===== MOVIMIENTO REDUCIDO ===== */
-/* ===================================== */
 
-/* Personas con sensibilidad al movimiento (vértigo, migraña) pueden
-   pedir a su sistema operativo "reducir movimiento". Aquí se respeta:
-   sin animaciones, sin desplazamientos y secciones visibles desde ya. */
+/* ===== 18. MOVIMIENTO REDUCIDO =====
+   Personas con sensibilidad al movimiento pueden pedir a su sistema
+   "reducir movimiento". Aquí se respeta: sin animaciones ni
+   desplazamientos, y secciones visibles desde el inicio. */
 @media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
 
     *,
     *::before,
@@ -1113,7 +1354,6 @@ footer {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
     }
 
     .seccion-oculta {
