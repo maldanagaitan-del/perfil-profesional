@@ -2,8 +2,8 @@
    style.css — Perfil profesional de Miguel Aldana
    ---------------------------------------------------------------------
    ÍNDICE
-    1. Reset y variables (tokens de diseño)
-    2. Base y tipografía
+    1. Reset y variables (tokens de diseño, tema oscuro único)
+    2. Base, tipografía y fondo animado
     3. Accesibilidad (foco, saltar contenido)
     4. Componentes reutilizables (sección, contenedor, títulos, botones)
     5. Header y navegación
@@ -31,26 +31,29 @@
 }
 
 :root {
-    /* Colores */
+    /* Colores (tema oscuro único) */
     --color-primario: #1a3a5c;
-    --color-encabezado: #1a3a5c;
+    --color-encabezado: #7db8e8;
     --color-secundario: #2e8b8b;
-    --color-secundario-texto: #1f6363;
-    --color-fondo: #f9f9f9;
-    --color-superficie: #ffffff;
-    --color-borde: #e0e0e0;
-    --color-texto: #333333;
-    --color-texto-claro: #5c5c5c;
+    --color-secundario-texto: #5eead4;
+    --color-fondo: #0f172a;
+    --color-superficie: #1e293b;
+    --color-borde: rgba(255, 255, 255, 0.1);
+    --color-texto: #e2e8f0;
+    --color-texto-claro: #94a3b8;
     --color-blanco: #ffffff;
-    --color-error: #b42318;
-    --color-exito: #15803d;
-    --color-foco: #1f6363;
-    --color-glow: rgba(46, 139, 139, 0.15);
-    --color-pie: #1a3a5c;
+    --color-error: #fca5a5;
+    --color-exito: #86efac;
+    --color-foco: #5eead4;
+    --color-glow: rgba(94, 234, 212, 0.12);
+    --color-pie: rgba(8, 13, 26, 0.92);
 
-    /* Fondo de las tarjetas. Cambia según la franja donde estén
-       (ver .seccion--alterna) para que siempre contrasten. */
-    --color-tarjeta: var(--color-superficie);
+    /* Fondos semitransparentes: dejan ver las figuras animadas del
+       fondo a través de tarjetas y franjas, y así la página no se
+       ve plana. --color-tarjeta cambia según la franja (.seccion--alterna). */
+    --color-tarjeta: rgba(30, 41, 59, 0.72);
+    --color-franja: rgba(30, 41, 59, 0.35);
+    --color-campo: rgba(15, 23, 42, 0.8);
 
     /* Espaciado */
     --space-2xs: 0.25rem;
@@ -64,17 +67,18 @@
 
     /* Radios */
     --radio-sm: 6px;
-    --radio-md: 10px;
+    --radio-md: 12px;
     --radio-lg: 16px;
     --radio-full: 50%;
 
-    /* Sombras */
-    --sombra-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --sombra-md: 0 2px 10px rgba(0, 0, 0, 0.06);
-    --sombra-lg: 0 6px 20px rgba(0, 0, 0, 0.1);
-    --sombra-boton: 0 10px 25px -5px rgba(26, 58, 92, 0.4);
-    --sombra-boton-hover: 0 15px 30px -5px rgba(26, 58, 92, 0.5);
-    --header-glass: rgba(255, 255, 255, 0.7);
+    /* Sombras y brillos */
+    --sombra-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --sombra-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+    --sombra-lg: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --sombra-brillo: 0 12px 32px -12px rgba(94, 234, 212, 0.35);
+    --sombra-boton: 0 10px 25px -5px rgba(94, 234, 212, 0.25);
+    --sombra-boton-hover: 0 15px 35px -5px rgba(94, 234, 212, 0.4);
+    --header-glass: rgba(15, 23, 42, 0.7);
 
     /* Tipografía */
     --fuente-principal: 'Inter', 'Segoe UI', Arial, sans-serif;
@@ -84,26 +88,6 @@
     --espaciado-seccion: var(--space-3xl) var(--space-xl);
     --ancho-maximo: 1100px;
     --ancho-angosto: 760px;
-}
-
-/* Modo oscuro: solo se redefinen las variables que cambian.
-   --color-blanco NO cambia a propósito: es el texto sobre fondos de color. */
-[data-tema="oscuro"] {
-    --color-fondo: #0f172a;
-    --color-superficie: #1e293b;
-    --color-borde: rgba(255, 255, 255, 0.12);
-    --color-texto: #e2e8f0;
-    --color-texto-claro: #94a3b8;
-    --color-encabezado: #7db8e8;
-    --color-secundario-texto: #5eead4;
-    --color-error: #fca5a5;
-    --color-exito: #86efac;
-    --color-foco: #5eead4;
-    --color-glow: rgba(94, 234, 212, 0.12);
-    --color-pie: #0b1220;
-    --sombra-boton: 0 10px 25px -5px rgba(94, 234, 212, 0.25);
-    --sombra-boton-hover: 0 15px 35px -5px rgba(94, 234, 212, 0.35);
-    --header-glass: rgba(15, 23, 42, 0.7);
 }
 
 
@@ -117,6 +101,7 @@ body {
     color: var(--color-texto);
     background-color: var(--color-fondo);
     line-height: 1.6;
+    position: relative;
 }
 
 h1,
@@ -134,6 +119,141 @@ img {
 /* Al saltar a una sección desde el menú, deja espacio para el header fijo */
 section[id] {
     scroll-margin-top: 70px;
+}
+
+/* ----- Fondo animado -----
+   Capa fija (position: fixed) detrás de todo (z-index: -1). Solo se
+   animan transform y opacity, que el navegador procesa en la tarjeta
+   gráfica sin recalcular la página: así no afecta el rendimiento. */
+.fondo-animado {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at top, rgba(30, 58, 92, 0.45), transparent 60%),
+        var(--color-fondo);
+}
+
+/* Orbes: manchas de luz grandes y difusas (radial-gradient, más
+   liviano que filter: blur) que flotan lentamente */
+.orbe {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+}
+
+.orbe--1 {
+    width: 600px;
+    height: 600px;
+    top: -150px;
+    left: -150px;
+    background: radial-gradient(circle, rgba(46, 139, 139, 0.28), transparent 65%);
+    animation: flotar-orbe 26s ease-in-out infinite alternate;
+}
+
+.orbe--2 {
+    width: 700px;
+    height: 700px;
+    bottom: -250px;
+    right: -200px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.22), transparent 65%);
+    animation: flotar-orbe 32s ease-in-out infinite alternate-reverse;
+}
+
+.orbe--3 {
+    width: 450px;
+    height: 450px;
+    top: 40%;
+    left: 45%;
+    background: radial-gradient(circle, rgba(94, 234, 212, 0.12), transparent 65%);
+    animation: flotar-orbe 22s ease-in-out infinite alternate;
+    animation-delay: -8s;
+}
+
+@keyframes flotar-orbe {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(120px, 80px) scale(1.15);
+    }
+
+    100% {
+        transform: translate(-60px, 160px) scale(0.95);
+    }
+}
+
+/* Figuras geométricas pequeñas que suben girando */
+.figura {
+    position: absolute;
+    bottom: -60px;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: subir-figura linear infinite;
+}
+
+.figura--anillo {
+    width: 46px;
+    height: 46px;
+    border: 2px solid rgba(94, 234, 212, 0.35);
+    border-radius: 50%;
+}
+
+.figura--cuadro {
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(125, 184, 232, 0.35);
+    border-radius: 6px;
+}
+
+.figura--punto {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(94, 234, 212, 0.5);
+    border-radius: 50%;
+}
+
+/* Cruz "+" dibujada con dos degradados (sin imágenes) */
+.figura--cruz {
+    width: 22px;
+    height: 22px;
+    background:
+        linear-gradient(rgba(125, 184, 232, 0.45), rgba(125, 184, 232, 0.45)) center / 100% 2px no-repeat,
+        linear-gradient(rgba(125, 184, 232, 0.45), rgba(125, 184, 232, 0.45)) center / 2px 100% no-repeat;
+}
+
+/* Posición horizontal, duración y retraso distintos para cada figura:
+   el retraso negativo hace que ya estén a mitad de camino al cargar */
+.f1 { left: 8%;  animation-duration: 28s; animation-delay: -4s; }
+.f2 { left: 22%; animation-duration: 34s; animation-delay: -18s; }
+.f3 { left: 38%; animation-duration: 24s; animation-delay: -10s; }
+.f4 { left: 55%; animation-duration: 38s; animation-delay: -26s; }
+.f5 { left: 70%; animation-duration: 30s; animation-delay: -2s; }
+.f6 { left: 84%; animation-duration: 26s; animation-delay: -14s; }
+.f7 { left: 92%; animation-duration: 36s; animation-delay: -30s; }
+.f8 { left: 30%; animation-duration: 40s; animation-delay: -6s; }
+
+@keyframes subir-figura {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+    }
 }
 
 
@@ -181,10 +301,10 @@ main:focus {
 
 /* Franja con fondo alterno: separa visualmente las secciones */
 .seccion--alterna {
-    background-color: var(--color-superficie);
+    background-color: var(--color-franja);
     border-top: 1px solid var(--color-borde);
     border-bottom: 1px solid var(--color-borde);
-    --color-tarjeta: var(--color-fondo);
+    --color-tarjeta: rgba(15, 23, 42, 0.75);
 }
 
 /* Contenido centrado con ancho máximo */
@@ -258,7 +378,7 @@ main:focus {
     padding: 0.9rem 2rem;
     border-radius: var(--radio-sm);
     border: 1px solid var(--color-borde);
-    background-color: var(--color-superficie);
+    background-color: var(--color-tarjeta);
     color: var(--color-encabezado);
     font-weight: 600;
     text-decoration: none;
@@ -358,7 +478,7 @@ header nav {
 
 /* "Contacto" se ve como botón: es la acción principal del menú */
 .nav-links a.nav-cta {
-    background-color: var(--color-primario);
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
     color: var(--color-blanco);
     padding: 0.45rem 1rem;
     border-radius: var(--radio-sm);
@@ -372,43 +492,9 @@ header nav {
 .nav-links a.nav-cta:hover,
 .nav-links a.nav-cta.activo {
     background-color: var(--color-secundario-texto);
-    color: var(--color-blanco);
-}
-
-[data-tema="oscuro"] .nav-links a.nav-cta:hover,
-[data-tema="oscuro"] .nav-links a.nav-cta.activo {
     color: var(--color-fondo);
 }
 
-.btn-tema {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--color-texto);
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.btn-tema svg {
-    width: 22px;
-    height: 22px;
-}
-
-.icono-luna {
-    display: none;
-}
-
-[data-tema="oscuro"] .icono-sol {
-    display: none;
-}
-
-[data-tema="oscuro"] .icono-luna {
-    display: block;
-}
 
 .btn-menu {
     display: none;
@@ -421,7 +507,7 @@ header nav {
     overflow: hidden;
     padding: var(--space-3xl) var(--space-xl);
     /* Patrón de puntos de fondo */
-    background-image: radial-gradient(circle at 1px 1px, var(--color-borde) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
     background-size: 24px 24px;
 }
 
@@ -450,7 +536,7 @@ header nav {
     display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
-    background-color: var(--color-superficie);
+    background-color: var(--color-tarjeta);
     border: 1px solid var(--color-borde);
     padding: var(--space-xs) var(--space-md);
     border-radius: 100px;
@@ -539,8 +625,8 @@ header nav {
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--radio-lg);
-    border: 6px solid var(--color-superficie);
-    box-shadow: var(--sombra-lg);
+    border: 1px solid rgba(94, 234, 212, 0.35);
+    box-shadow: var(--sombra-lg), 0 0 60px -10px rgba(94, 234, 212, 0.35);
 }
 
 /* Etiqueta flotante sobre la foto con la credencial principal */
@@ -609,12 +695,15 @@ header nav {
     border-radius: var(--radio-md);
     border: 1px solid var(--color-borde);
     box-shadow: var(--sombra-md);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.tarjeta-servicio:hover {
+.tarjeta-servicio:hover,
+.paso:hover,
+.tarjeta-proyecto:hover {
     transform: translateY(-4px);
-    box-shadow: var(--sombra-lg);
+    border-color: rgba(94, 234, 212, 0.4);
+    box-shadow: var(--sombra-brillo);
 }
 
 /* La tarjeta destacada ocupa toda la columna derecha (2 filas) */
@@ -733,6 +822,7 @@ header nav {
     border: 1px solid var(--color-borde);
     border-radius: var(--radio-md);
     padding: var(--space-lg);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .numero-paso {
@@ -777,7 +867,7 @@ header nav {
     border-radius: var(--radio-md);
     border: 1px solid var(--color-borde);
     border-left: 4px solid var(--color-secundario);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     counter-increment: contador-proyectos;
 }
 
@@ -790,17 +880,12 @@ header nav {
     font-family: var(--fuente-titulos);
     font-size: 4.5rem;
     font-weight: 700;
-    color: var(--color-borde);
+    color: rgba(255, 255, 255, 0.06);
     line-height: 1;
 }
 
 .tarjeta-proyecto > * {
     position: relative;
-}
-
-.tarjeta-proyecto:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--sombra-md);
 }
 
 .tarjeta-proyecto h3 {
@@ -959,7 +1044,7 @@ header nav {
     border-radius: var(--radio-sm);
     font-family: var(--fuente-principal);
     font-size: 1rem;
-    background-color: var(--color-superficie);
+    background-color: var(--color-campo);
     color: var(--color-texto);
 }
 
@@ -1076,6 +1161,7 @@ header nav {
 /* ===== 14. PIE DE PÁGINA ===== */
 .pie {
     background-color: var(--color-pie);
+    border-top: 1px solid var(--color-borde);
     color: rgba(255, 255, 255, 0.8);
     padding: var(--space-2xl) var(--space-xl) 0;
 }
@@ -1322,6 +1408,20 @@ header nav {
     .pie-grid {
         grid-template-columns: 1fr;
         text-align: center;
+    }
+
+    /* En celular: menos figuras (ahorra batería) y orbes más chicos */
+    .f2,
+    .f4,
+    .f7,
+    .f8 {
+        display: none;
+    }
+
+    .orbe--1,
+    .orbe--2 {
+        width: 380px;
+        height: 380px;
     }
 
     .whatsapp-flotante {

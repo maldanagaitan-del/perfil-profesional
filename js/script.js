@@ -15,24 +15,6 @@ document.documentElement.classList.remove('no-js');
 const prefiereMenosMovimiento =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// localStorage puede lanzar error (modo privado estricto, cookies bloqueadas).
-// Estas dos funciones lo envuelven para que nunca rompa la página.
-function leerPreferencia(clave) {
-    try {
-        return localStorage.getItem(clave);
-    } catch (error) {
-        return null;
-    }
-}
-
-function guardarPreferencia(clave, valor) {
-    try {
-        localStorage.setItem(clave, valor);
-    } catch (error) {
-        /* Sin almacenamiento: el cambio funciona, pero no se recuerda */
-    }
-}
-
 
 /* ===== 1. MENÚ HAMBURGUESA ===== */
 function iniciarMenu() {
@@ -168,36 +150,7 @@ function iniciarLinkActivo() {
 }
 
 
-/* ===== 5. MODO OSCURO =====
-   El tema inicial lo aplica un script corto en el <head> de index.html
-   (así no hay parpadeo). Aquí solo se maneja el botón. */
-function iniciarTema() {
-    const btnTema = document.getElementById('btnTema');
-    if (!btnTema) return;
-    const html = document.documentElement;
-
-    function sincronizarBoton() {
-        const oscuro = html.getAttribute('data-tema') === 'oscuro';
-        // aria-pressed le dice al lector de pantalla si el modo está activo
-        btnTema.setAttribute('aria-pressed', String(oscuro));
-    }
-
-    btnTema.addEventListener('click', function () {
-        if (html.getAttribute('data-tema') === 'oscuro') {
-            html.removeAttribute('data-tema');
-            guardarPreferencia('tema', 'claro');
-        } else {
-            html.setAttribute('data-tema', 'oscuro');
-            guardarPreferencia('tema', 'oscuro');
-        }
-        sincronizarBoton();
-    });
-
-    sincronizarBoton();
-}
-
-
-/* ===== 6. CONTADORES ANIMADOS =====
+/* ===== 5. CONTADORES ANIMADOS =====
    El HTML ya trae el número final (lo que ven Google y quien no tiene
    JavaScript). Aquí se reinicia a 0 y se anima cuando aparece en pantalla. */
 function iniciarContadores() {
@@ -238,7 +191,7 @@ function iniciarContadores() {
 }
 
 
-/* ===== 7. FORMULARIO DE CONTACTO (validación + envío a Formspree) ===== */
+/* ===== 6. FORMULARIO DE CONTACTO (validación + envío a Formspree) ===== */
 function iniciarFormulario() {
     const formulario = document.getElementById('formContacto');
     if (!formulario) return;
@@ -373,7 +326,6 @@ function iniciarFormulario() {
     iniciarRevelado,
     iniciarHeaderScroll,
     iniciarLinkActivo,
-    iniciarTema,
     iniciarContadores,
     iniciarFormulario
 ].forEach(function (modulo) {

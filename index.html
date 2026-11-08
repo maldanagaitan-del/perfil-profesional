@@ -8,23 +8,9 @@
     <meta name="description"
         content="Asesoría contable, automatización de procesos y desarrollo web, combinando más de 5 años de experiencia contable con formación en Ingeniería en Programación Software.">
 
-    <!-- Tema: se aplica ANTES de pintar la página para evitar el parpadeo
-         claro -> oscuro. Prioridad: 1) lo que el visitante eligió antes,
-         2) la preferencia de su sistema operativo. -->
-    <script>
-        (function () {
-            try {
-                var tema = localStorage.getItem('tema');
-                var sistemaOscuro = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                if (tema === 'oscuro' || (!tema && sistemaOscuro)) {
-                    document.documentElement.setAttribute('data-tema', 'oscuro');
-                }
-            } catch (e) { /* localStorage bloqueado: se queda en tema claro */ }
-        })();
-    </script>
 
     <link rel="canonical" href="https://maldanagaitan-del.github.io/perfil-profesional/">
-    <meta name="theme-color" content="#1a3a5c">
+    <meta name="theme-color" content="#0f172a">
     <link rel="manifest" href="img/favicon/site.webmanifest">
 
     <meta property="og:type" content="website">
@@ -124,6 +110,22 @@
          con teclado o lector de pantalla saltarse el menú. -->
     <a class="saltar-contenido" href="#contenido">Saltar al contenido</a>
 
+    <!-- Fondo animado: figuras decorativas detrás de todo el contenido.
+         aria-hidden="true" = los lectores de pantalla lo ignoran. -->
+    <div class="fondo-animado" aria-hidden="true">
+        <span class="orbe orbe--1"></span>
+        <span class="orbe orbe--2"></span>
+        <span class="orbe orbe--3"></span>
+        <span class="figura figura--anillo f1"></span>
+        <span class="figura figura--cuadro f2"></span>
+        <span class="figura figura--punto f3"></span>
+        <span class="figura figura--cuadro f4"></span>
+        <span class="figura figura--anillo f5"></span>
+        <span class="figura figura--punto f6"></span>
+        <span class="figura figura--cruz f7"></span>
+        <span class="figura figura--cruz f8"></span>
+    </div>
+
     <header>
         <nav aria-label="Navegación principal">
             <a href="#inicio" class="logo">Miguel Aldana</a>
@@ -139,16 +141,6 @@
                     <!-- El último enlace se ve como botón: es la acción principal -->
                     <li><a href="#contacto" class="nav-cta">Contacto</a></li>
                 </ul>
-                <button class="btn-tema" id="btnTema" type="button" aria-label="Modo oscuro" aria-pressed="false">
-                    <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <circle cx="12" cy="12" r="5" />
-                        <path
-                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-                    </svg>
-                    <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
-                    </svg>
-                </button>
                 <button class="btn-menu" id="btnMenu" type="button" aria-label="Abrir menú"
                     aria-expanded="false" aria-controls="navLinks">
                     <span aria-hidden="true"></span>
