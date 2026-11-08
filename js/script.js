@@ -117,10 +117,8 @@ todasLasSecciones.forEach(function(seccion) {
 const btnTema = document.getElementById('btnTema');
 const html = document.documentElement;
 
-const temaGuardado = localStorage.getItem('tema');
-if (temaGuardado === 'oscuro') {
-    html.setAttribute('data-tema', 'oscuro');
-}
+// El tema inicial ya lo aplica un script corto en el <head> de
+// index.html (así no hay parpadeo). Aquí solo se maneja el botón.
 
 btnTema.addEventListener('click', function() {
     const temaActual = html.getAttribute('data-tema');

@@ -112,6 +112,17 @@ nav {
     font-size: 1.4rem;
     font-weight: bold;
     color: var(--color-encabezado);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* Agrupa enlaces + botón de tema + hamburguesa en el lado derecho.
+   Antes, justify-content: space-between repartía 3 elementos y el
+   botón de tema quedaba flotando en el centro de la barra. */
+.nav-acciones {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
 }
 
 .btn-tema {
@@ -124,6 +135,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .btn-tema svg {
@@ -354,34 +366,25 @@ nav {
     color: var(--color-texto);
 }
 
-.datos-clave {
-    list-style: none;
-    margin-top: 1.5rem;
-}
-
-.datos-clave li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid var(--color-borde);
-}
-
-.datos-clave li:last-child {
-    border-bottom: none;
-}
-
 .grid-contadores {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-md);
     margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-borde);
     text-align: center;
 }
 
-.numero-contador {
+/* --color-encabezado (no --color-primario) porque sí se adapta al
+   modo oscuro: antes el contraste en oscuro era 1,53:1, ilegible. */
+.valor-destacado {
     display: block;
     font-family: var(--fuente-titulos);
     font-size: 2rem;
     font-weight: 700;
-    color: var(--color-primario);
+    line-height: 1.2;
+    color: var(--color-encabezado);
 }
 
 .contador p {
@@ -564,35 +567,9 @@ nav {
     border-radius: 100px;
 }
 
-.enlace-proyecto {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    margin-top: var(--space-md);
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--color-secundario-texto);
-    opacity: 0;
-    transform: translateX(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.tarjeta-proyecto:hover .enlace-proyecto {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.enlace-proyecto svg {
-    width: 16px;
-    height: 16px;
-    transition: transform 0.25s ease;
-}
-
-.tarjeta-proyecto:hover .enlace-proyecto svg {
-    transform: translateX(3px);
-}
-
-/* ===== SECCIÓN TESTIMONIOS ===== */
+/* ===== SECCIÓN TESTIMONIOS =====
+   La sección está desactivada en index.html hasta tener testimonios
+   reales; estos estilos se conservan para reactivarla sin rehacerlos. */
 #testimonios {
     max-width: var(--ancho-maximo);
     margin: 0 auto;
@@ -866,85 +843,16 @@ footer {
 }
 
 /* ===================================== */
-/* ===== RESPONSIVE (MÓVIL) ===== */
+/* ===== RESPONSIVE: MENÚ (TABLET) ===== */
 /* ===================================== */
 
-@media (max-width: 768px) {
+/* El menú horizontal necesita ~900px. Antes se colapsaba recién en
+   768px, y entre 769 y ~1000px el logo se partía en dos líneas y el
+   botón de tema se aplastaba. Ahora se usa la hamburguesa hasta 1024px. */
+@media (max-width: 1024px) {
 
-    nav {
-        padding: 1rem;
-    }
-
-    .nav-links {
-        gap: 1rem;
-    }
-
-    .nav-links a {
-        font-size: 0.85rem;
-    }
-
-    #inicio h1 {
-        font-size: 2.2rem;
-    }
-
-    .subtitulo {
-        font-size: 1.1rem;
-    }
-
-    .descripcion {
-        font-size: 1rem;
-        padding: 0 1rem;
-    }
-
-    .contenido-sobre-mi {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .contenido-sobre-mi img {
-        width: 200px;
-        height: 200px;
-        border-radius: var(--radio-full);
-    }
-
-    .grid-contadores {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--space-sm);
-    }
-
-    .numero-contador {
-        font-size: 1.5rem;
-    }
-
-    .grid-servicios,
-    .grid-proyectos {
-        grid-template-columns: 1fr;
-        grid-template-rows: none;
-    }
-
-    .tarjeta-servicio:nth-child(1),
-    .tarjeta-servicio:nth-child(2),
-    .tarjeta-servicio:nth-child(3) {
-        grid-column: auto;
-        grid-row: auto;
-    }
-
-    :root {
-        --espaciado-seccion: 3rem 1.2rem;
-    }
-
-    #contacto {
-        max-width: 100%;
-    }
-
-    #contacto h2 {
-        font-size: 1.8rem;
-    }
-
-    #servicios h2,
-    #proyectos h2,
-    #sobre-mi h2 {
-        font-size: 1.8rem;
+    .nav-acciones {
+        gap: var(--space-md);
     }
 
     .btn-menu {
@@ -975,12 +883,87 @@ footer {
         width: 100%;
         background-color: var(--color-superficie);
         flex-direction: column;
+        gap: var(--space-md);
         padding: 1.5rem;
         box-shadow: var(--sombra-lg);
     }
 
     .nav-links.activo {
         display: flex;
+    }
+}
+
+/* ===================================== */
+/* ===== RESPONSIVE: DISEÑO (MÓVIL) ===== */
+/* ===================================== */
+
+@media (max-width: 768px) {
+
+    :root {
+        --espaciado-seccion: 3rem 1.2rem;
+    }
+
+    nav {
+        padding: 1rem;
+    }
+
+    #inicio h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitulo {
+        font-size: 1.1rem;
+    }
+
+    .descripcion {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    .contenido-sobre-mi {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .contenido-sobre-mi img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .grid-contadores {
+        gap: var(--space-sm);
+    }
+
+    .valor-destacado {
+        font-size: 1.25rem;
+    }
+
+    .grid-servicios,
+    .grid-proyectos {
+        grid-template-columns: 1fr;
+        grid-template-rows: none;
+    }
+
+    .tarjeta-servicio:nth-child(1),
+    .tarjeta-servicio:nth-child(2),
+    .tarjeta-servicio:nth-child(3) {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    #contacto {
+        max-width: 100%;
+    }
+
+    /* Todos los títulos de sección se reducen igual (antes Testimonios
+       y FAQ quedaban en 2.2rem) */
+    #sobre-mi h2,
+    #servicios h2,
+    #proyectos h2,
+    #testimonios h2,
+    #preguntas-frecuentes h2,
+    #contacto h2 {
+        font-size: 1.8rem;
     }
 
     .whatsapp-flotante {
