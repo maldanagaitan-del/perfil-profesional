@@ -16,6 +16,50 @@ const prefiereMenosMovimiento =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 
+/* ===== GOOGLE ANALYTICS 4 =====
+   Pega aquí tu ID de medición (GA4 → Administrar → Flujos de datos →
+   tu sitio web). Mientras esté vacío, Analytics no se carga y la página
+   funciona igual. */
+const GA4_ID = ''; // ejemplo: 'G-ABC123XYZ'
+
+// Envía un evento a GA4 si está activo; si no, no hace nada.
+function registrarEvento(nombre, datos) {
+    if (typeof window.gtag === 'function') {
+        window.gtag('event', nombre, datos || {});
+    }
+}
+
+function iniciarAnalitica() {
+    if (!/^G-[A-Z0-9]+$/.test(GA4_ID)) return;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA4_ID);
+
+    // Clics que indican intención de contacto
+    document.addEventListener('click', function (evento) {
+        const enlace = evento.target.closest('a');
+        if (!enlace) return;
+        const href = enlace.getAttribute('href') || '';
+        const datos = { ubicacion: enlace.className || 'enlace', pagina: document.body.dataset.pagina };
+
+        if (href.indexOf('wa.me') !== -1) {
+            registrarEvento('contacto_whatsapp', datos);
+        } else if (href.indexOf('diagnostico-automatizacion') !== -1) {
+            registrarEvento('clic_diagnostico', datos);
+        } else if (href.indexOf('mailto:') === 0) {
+            registrarEvento('contacto_email', datos);
+        }
+    });
+}
+
+
 /* ===== 1. MENÚ HAMBURGUESA ===== */
 function iniciarMenu() {
     const btnMenu = document.getElementById('btnMenu');
@@ -69,7 +113,7 @@ function iniciarMenu() {
     });
 
     // Si la ventana se agranda a tamaño escritorio, se resetea el estado
-    const escritorio = window.matchMedia('(min-width: 1025px)');
+    const escritorio = window.matchMedia('(min-width: 1181px)');
     escritorio.addEventListener('change', function (cambio) {
         if (cambio.matches) cerrarMenu(false);
     });
@@ -121,6 +165,9 @@ function iniciarHeaderScroll() {
 
 /* ===== 4. LINK ACTIVO SEGÚN LA SECCIÓN VISIBLE ===== */
 function iniciarLinkActivo() {
+    // Solo en el inicio: en las demás páginas el enlace actual ya viene
+    // marcado en el HTML con aria-current="page".
+    if (document.body.dataset.pagina !== 'inicio') return;
     if (!('IntersectionObserver' in window)) return;
 
     const secciones = document.querySelectorAll('main section[id]');
@@ -218,11 +265,20 @@ function iniciarFormulario() {
             if (valor === '') return 'Cuéntame en qué te puedo ayudar.';
             if (valor.length < 10) return 'El mensaje debe tener al menos 10 caracteres.';
             return '';
+        },
+        autorizacion: function (valor) {
+            return valor === '' ? 'Debes aceptar la política de tratamiento de datos para enviar el mensaje.' : '';
         }
     };
 
+    // En una casilla importa si está marcada, no su texto
+    function valorDe(campo) {
+        if (campo.type === 'checkbox') return campo.checked ? 'si' : '';
+        return campo.value.trim();
+    }
+
     function validarCampo(campo) {
-        const error = reglas[campo.name](campo.value.trim());
+        const error = reglas[campo.name](valorDe(campo));
         const contenedorError = document.getElementById('error-' + campo.name);
         if (contenedorError) contenedorError.textContent = error;
         if (error) {
@@ -257,7 +313,8 @@ function iniciarFormulario() {
     // apareciera en ese momento, empujaría el botón "Enviar" hacia abajo
     // justo mientras se le hace clic, y el clic se perdería.
     campos.forEach(function (campo) {
-        campo.addEventListener('input', function () {
+        const tipoEvento = campo.type === 'checkbox' ? 'change' : 'input';
+        campo.addEventListener(tipoEvento, function () {
             if (campo.getAttribute('aria-invalid') === 'true') validarCampo(campo);
         });
     });
@@ -296,6 +353,7 @@ function iniciarFormulario() {
             });
 
             if (respuesta.ok) {
+                registrarEvento('generate_lead', { pagina: document.body.dataset.pagina });
                 formulario.reset();
                 const span = document.createElement('span');
                 span.textContent = nombre; // textContent evita inyectar HTML escrito por el visitante
@@ -485,6 +543,7 @@ function iniciarConstelacion() {
    Cada módulo se ejecuta aislado: un error en uno no detiene a los demás,
    y queda registrado en la consola con el nombre de la función. */
 [
+    iniciarAnalitica,
     iniciarMenu,
     iniciarRevelado,
     iniciarHeaderScroll,

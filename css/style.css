@@ -18,8 +18,9 @@
    14. Pie de página
    15. WhatsApp flotante
    16. Animación de aparición
-   17. Responsive: menú (≤1024px) y diseño (≤768px)
-   18. Movimiento reducido
+   17. Páginas internas (servicios, diagnóstico, privacidad)
+   18. Responsive: menú (≤1180px) y diseño (≤768px)
+   19. Movimiento reducido
    ===================================================================== */
 
 
@@ -358,7 +359,7 @@ header nav {
 }
 
 .logo {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     font-weight: bold;
     color: var(--color-encabezado);
     text-decoration: none;
@@ -410,6 +411,12 @@ header nav {
     width: 100%;
 }
 
+/* Página actual (aria-current) o sección visible (activo) */
+.nav-links a[aria-current="page"]:not(.nav-cta)::after {
+    width: 100%;
+}
+
+.nav-links a[aria-current="page"]:not(.nav-cta),
 .nav-links a.activo {
     color: var(--color-secundario-texto);
     font-weight: 600;
@@ -645,11 +652,8 @@ header nav {
     box-shadow: var(--sombra-brillo);
 }
 
-/* La tarjeta destacada ocupa toda la columna derecha (2 filas) */
+/* Tarjeta destacada: el servicio diferenciador (borde y fondo propios) */
 .tarjeta-servicio--destacada {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    justify-content: center;
     background: linear-gradient(160deg, var(--color-tarjeta), var(--color-glow));
     border-color: var(--color-secundario);
 }
@@ -1211,10 +1215,245 @@ header nav {
 }
 
 
-/* ===== 17. RESPONSIVE ===== */
+/* ===== 17. PÁGINAS INTERNAS ===== */
 
-/* --- Menú: hamburguesa hasta 1024px --- */
-@media (max-width: 1024px) {
+/* Hero más compacto para las páginas de servicio */
+.hero--interna {
+    padding: 4rem 2rem 3.5rem;
+}
+
+.hero--interna .contenedor {
+    max-width: 860px;
+}
+
+.hero--interna h1 {
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    line-height: 1.2;
+    color: var(--color-encabezado);
+    margin-bottom: var(--space-md);
+}
+
+/* Migas de pan: Inicio › Servicio */
+.migas ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-texto-claro);
+    margin-bottom: var(--space-lg);
+}
+
+.migas li + li::before {
+    content: '›';
+    margin-right: 0.4rem;
+}
+
+.migas a {
+    color: var(--color-secundario-texto);
+    text-decoration: none;
+}
+
+.migas a:hover {
+    text-decoration: underline;
+}
+
+/* Tarjetas genéricas en cuadrícula que se adapta sola al ancho */
+.grid-tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-lg);
+}
+
+.tarjeta {
+    display: block;
+    background-color: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-md);
+    padding: var(--space-lg);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta .etiqueta-destacada {
+    display: inline-block;
+}
+
+.tarjeta h3 {
+    color: var(--color-encabezado);
+    font-size: 1.05rem;
+    margin-bottom: var(--space-xs);
+}
+
+.tarjeta p {
+    color: var(--color-texto-claro);
+    font-size: 0.95rem;
+}
+
+/* Tarjeta que es un enlace completo (servicios relacionados) */
+.tarjeta--enlace {
+    text-decoration: none;
+}
+
+.tarjeta--enlace:hover {
+    transform: translateY(-4px);
+    border-color: rgba(94, 234, 212, 0.4);
+    box-shadow: var(--sombra-brillo);
+}
+
+/* Caso real destacado */
+.tarjeta--caso {
+    margin-top: var(--space-xl);
+    border-color: rgba(94, 234, 212, 0.35);
+    background: linear-gradient(160deg, var(--color-tarjeta), var(--color-glow));
+}
+
+.tarjeta--caso p {
+    color: var(--color-texto);
+    font-size: 1rem;
+}
+
+/* Lista de problemas: cada punto en su propia franja */
+.lista-problemas {
+    list-style: none;
+    display: grid;
+    gap: var(--space-sm);
+}
+
+.lista-problemas li {
+    position: relative;
+    padding: var(--space-sm) var(--space-md) var(--space-sm) 2.4rem;
+    background-color: var(--color-tarjeta);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-sm);
+}
+
+.lista-problemas li::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 1.15em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-secundario-texto);
+    box-shadow: 0 0 10px var(--color-secundario-texto);
+}
+
+.contenido-texto p {
+    margin-bottom: var(--space-md);
+    font-size: 1.05rem;
+}
+
+.subtitulo-centrado {
+    text-align: center;
+    color: var(--color-encabezado);
+    font-size: 1.1rem;
+    margin: var(--space-2xl) 0 var(--space-md);
+}
+
+/* Chips de herramientas */
+.chips {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xs);
+}
+
+.chip {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-secundario-texto);
+    background-color: var(--color-glow);
+    border: 1px solid rgba(94, 234, 212, 0.25);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+}
+
+/* Banda de llamado a la acción (diagnóstico gratis) */
+.banda-cta {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(26, 58, 92, 0.75), rgba(46, 139, 139, 0.35));
+    border: 1px solid rgba(94, 234, 212, 0.3);
+    border-radius: var(--radio-lg);
+    padding: var(--space-2xl) var(--space-xl);
+    box-shadow: var(--sombra-brillo);
+}
+
+.banda-cta h2 {
+    color: var(--color-blanco);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: var(--space-sm);
+}
+
+.banda-cta p {
+    color: var(--color-texto);
+    max-width: 600px;
+    margin: 0 auto var(--space-xl);
+}
+
+.banda-cta .hero-acciones {
+    justify-content: center;
+}
+
+/* Casilla de autorización de datos en el formulario */
+.formulario-contacto label.casilla {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--color-texto-claro);
+    cursor: pointer;
+}
+
+.formulario-contacto input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 0.15rem;
+    padding: 0;
+    accent-color: var(--color-secundario);
+}
+
+.casilla a {
+    color: var(--color-secundario-texto);
+}
+
+/* Textos legales: lectura cómoda */
+.texto-legal h2 {
+    color: var(--color-encabezado);
+    font-size: 1.25rem;
+    margin: var(--space-xl) 0 var(--space-sm);
+}
+
+.texto-legal h2:first-child {
+    margin-top: 0;
+}
+
+.texto-legal p,
+.texto-legal li {
+    margin-bottom: var(--space-sm);
+}
+
+.texto-legal ul {
+    padding-left: 1.4rem;
+}
+
+.texto-legal a,
+.hero--interna .lista-incluye a {
+    color: var(--color-secundario-texto);
+}
+
+.pie-inferior a {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* ===== 18. RESPONSIVE ===== */
+
+/* --- Menú: hamburguesa hasta 1180px (el nombre completo ocupa más espacio) --- */
+@media (max-width: 1180px) {
 
     .nav-acciones {
         gap: var(--space-md);
@@ -1321,6 +1560,14 @@ header nav {
         justify-content: center;
     }
 
+    .hero--interna {
+        padding: 2.5rem 1.2rem 3rem;
+    }
+
+    .banda-cta {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
     .titulo-seccion {
         font-size: 1.8rem;
     }
@@ -1337,11 +1584,6 @@ header nav {
     .grid-proyectos,
     .pasos {
         grid-template-columns: 1fr;
-    }
-
-    .tarjeta-servicio--destacada {
-        grid-column: auto;
-        grid-row: auto;
     }
 
     .pie-grid {
@@ -1370,7 +1612,7 @@ header nav {
 }
 
 
-/* ===== 18. MOVIMIENTO REDUCIDO =====
+/* ===== 19. MOVIMIENTO REDUCIDO =====
    Personas con sensibilidad al movimiento pueden pedir a su sistema
    "reducir movimiento". Aquí se respeta: sin animaciones ni
    desplazamientos, y secciones visibles desde el inicio. */
