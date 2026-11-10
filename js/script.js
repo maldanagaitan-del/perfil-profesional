@@ -20,7 +20,7 @@ const prefiereMenosMovimiento =
    Pega aquí tu ID de medición (GA4 → Administrar → Flujos de datos →
    tu sitio web). Mientras esté vacío, Analytics no se carga y la página
    funciona igual. */
-const GA4_ID = ''; // ejemplo: 'G-ABC123XYZ'
+const GA4_ID = 'G-G38HFNT9ZD';
 
 // Envía un evento a GA4 si está activo; si no, no hace nada.
 function registrarEvento(nombre, datos) {
